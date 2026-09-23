@@ -1,0 +1,12 @@
+# Ngspice raw simulation data (bisa ukuran ratusan MB!)
+*.raw
+*.tr0
+*.ac0
+*.dc0
+*.si
+*.sw0
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
