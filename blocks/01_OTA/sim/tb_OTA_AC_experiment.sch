@@ -157,7 +157,7 @@ save all
 
 op
 
-echo ===== BASELINE OTA OPERATING POINT =====
+echo ===== EXPERIMENT OTA OPERATING POINT =====
 print v(vbias)
 print v(vin_p)
 print v(vin_n)
@@ -179,7 +179,7 @@ meas ac A0 FIND gain_db AT=1
 meas ac UGF WHEN gain_db=0 CROSS=1
 meas ac PHASE_UGF FIND phase_deg WHEN gain_db=0 CROSS=1
 
-echo ===== BASELINE OTA AC RESULTS =====
+echo ===== EXPERIMENT OTA AC RESULTS =====
 print A0
 print UGF
 print PHASE_UGF
@@ -199,6 +199,6 @@ corner=tt
 }
 
 
-C {blocks/01_OTA/xschem/OTA.sym} 560 -230 0 0 {
+C {blocks/01_OTA/xschem/OTA_experiment.sym} 560 -230 0 0 {
 name=x1
 }

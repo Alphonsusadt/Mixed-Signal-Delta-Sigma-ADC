@@ -19,8 +19,8 @@ N 640 -260 850 -260 {lab=Vout_p}
 N 720 -240 720 -190 {lab=Vout_n}
 N 850 -260 850 -190 {lab=Vout_p}
 
-N 720 -130 720 -110 {lab=0}
 N 850 -130 850 -110 {lab=0}
+N 720 -130 720 -110 {lab=0}
 
 N 720 -240 900 -240 {lab=Vout_n}
 N 850 -260 900 -260 {lab=Vout_p}
@@ -50,35 +50,17 @@ N 370 -180 370 -120 {lab=Vbias}
 N 370 -180 410 -180 {lab=Vbias}
 
 
-C {vsource.sym} 30 -90 0 0 {
-name=V1
-value=1.8
-}
+C {vsource.sym} 30 -90 0 0 {name=V1 value=1.8}
 
-C {vsource.sym} 90 -90 0 0 {
-name=V2
-value=0.9
-}
+C {vsource.sym} 90 -90 0 0 {name=V2 value=0.9}
 
-C {vsource.sym} 150 -90 0 0 {
-name=V3
-value=1.5
-}
+C {vsource.sym} 150 -90 0 0 {name=V3 value=1.5}
 
-C {vsource.sym} 210 -90 0 0 {
-name=V4
-value="DC 0.4 AC 0.5"
-}
+C {vsource.sym} 210 -90 0 0 {name=V4 value="PULSE(0.39995 0.40005 200n 1n 1n 400n 1u)"}
 
-C {vsource.sym} 310 -90 0 0 {
-name=V5
-value="DC 0.4 AC 0.5 180"
-}
+C {vsource.sym} 310 -90 0 0 {name=V5 value="PULSE(0.40005 0.39995 200n 1n 1n 400n 1u)"}
 
-C {vsource.sym} 370 -90 0 0 {
-name=V6
-value=0.507621
-}
+C {vsource.sym} 370 -90 0 0 {name=V6 value=0.507621}
 
 
 C {gnd.sym} 30 -40 0 0 {name=l1 lab=0}
@@ -117,6 +99,35 @@ device=polarized_capacitor
 }
 
 
+C {code_shown.sym} 20 -590 0 0 {
+name=s1
+only_toplevel=false
+value="
+.control
+save all
+
+tran 0.5n 1.2u
+
+let vid = v(vin_p)-v(vin_n)
+let vod = v(vout_p)-v(vout_n)
+
+plot v(vin_p) v(vin_n)
+plot v(vout_p) v(vout_n)
+plot vid
+plot vod
+
+.endc
+"
+}
+
+
+C {sky130_fd_pr/corner.sym} 780 -400 0 0 {
+name=CORNER
+only_toplevel=false
+corner=tt
+}
+
+
 C {lab_wire.sym} 370 -280 0 0 {
 name=p3
 sig_type=std_logic
@@ -148,57 +159,6 @@ lab=Vbias
 }
 
 
-C {code_shown.sym} 20 -650 0 0 {
-name=s1
-only_toplevel=true
-value="
-.control
-save all
-
-op
-
-echo ===== BASELINE OTA OPERATING POINT =====
-print v(vbias)
-print v(vin_p)
-print v(vin_n)
-print v(vout_p)
-print v(vout_n)
-
-ac dec 100 1 1G
-
-let vid = v(vin_p)-v(vin_n)
-let vod = v(vout_p)-v(vout_n)
-
-let av = vod/vid
-let loopgain = -av
-
-let gain_db = db(loopgain)
-let phase_deg = 180/pi*cph(loopgain)
-
-meas ac A0 FIND gain_db AT=1
-meas ac UGF WHEN gain_db=0 CROSS=1
-meas ac PHASE_UGF FIND phase_deg WHEN gain_db=0 CROSS=1
-
-echo ===== BASELINE OTA AC RESULTS =====
-print A0
-print UGF
-print PHASE_UGF
-
-plot gain_db
-plot phase_deg
-
-.endc
-"
-}
-
-
-C {sky130_fd_pr/corner.sym} 780 -400 0 0 {
-name=CORNER
-only_toplevel=false
-corner=tt
-}
-
-
-C {blocks/01_OTA/xschem/OTA.sym} 560 -230 0 0 {
+C {blocks/01_OTA/xschem/OTA_experiment.sym} 560 -230 0 0 {
 name=x1
 }

@@ -9,8 +9,6 @@ E {}
 N 30 -60 30 -40 {lab=0}
 N 90 -60 90 -40 {lab=0}
 N 150 -60 150 -40 {lab=0}
-N 210 -60 210 -40 {lab=0}
-N 310 -60 310 -40 {lab=0}
 N 370 -60 370 -40 {lab=0}
 
 N 640 -240 720 -240 {lab=Vout_n}
@@ -19,8 +17,8 @@ N 640 -260 850 -260 {lab=Vout_p}
 N 720 -240 720 -190 {lab=Vout_n}
 N 850 -260 850 -190 {lab=Vout_p}
 
-N 720 -130 720 -110 {lab=0}
 N 850 -130 850 -110 {lab=0}
+N 720 -130 720 -110 {lab=0}
 
 N 720 -240 900 -240 {lab=Vout_n}
 N 850 -260 900 -260 {lab=Vout_p}
@@ -40,11 +38,8 @@ N 240 -260 240 -250 {lab=Vbz}
 N 240 -260 410 -260 {lab=Vbz}
 N 240 -240 410 -240 {lab=Vbz}
 
-N 210 -220 210 -120 {lab=Vin_p}
-N 210 -220 410 -220 {lab=Vin_p}
-
-N 310 -200 310 -120 {lab=Vin_n}
-N 310 -200 410 -200 {lab=Vin_n}
+N 390 -220 410 -220 {lab=Vin_p}
+N 390 -200 410 -200 {lab=Vin_n}
 
 N 370 -180 370 -120 {lab=Vbias}
 N 370 -180 410 -180 {lab=Vbias}
@@ -65,16 +60,6 @@ name=V3
 value=1.5
 }
 
-C {vsource.sym} 210 -90 0 0 {
-name=V4
-value="DC 0.4 AC 0.5"
-}
-
-C {vsource.sym} 310 -90 0 0 {
-name=V5
-value="DC 0.4 AC 0.5 180"
-}
-
 C {vsource.sym} 370 -90 0 0 {
 name=V6
 value=0.507621
@@ -84,8 +69,6 @@ value=0.507621
 C {gnd.sym} 30 -40 0 0 {name=l1 lab=0}
 C {gnd.sym} 90 -40 0 0 {name=l2 lab=0}
 C {gnd.sym} 150 -40 0 0 {name=l3 lab=0}
-C {gnd.sym} 210 -40 0 0 {name=l4 lab=0}
-C {gnd.sym} 310 -40 0 0 {name=l5 lab=0}
 C {gnd.sym} 370 -40 0 0 {name=l6 lab=0}
 
 C {gnd.sym} 720 -110 0 0 {name=l8 lab=0}
@@ -118,74 +101,117 @@ device=polarized_capacitor
 
 
 C {lab_wire.sym} 370 -280 0 0 {
-name=p3
+name=p4
 sig_type=std_logic
 lab=Vcmfb1
 }
 
 C {lab_wire.sym} 210 -250 0 0 {
-name=p4
+name=p5
 sig_type=std_logic
 lab=Vbz
 }
 
-C {lab_wire.sym} 370 -220 0 0 {
-name=p5
+C {lab_wire.sym} 390 -220 0 0 {
+name=p6
 sig_type=std_logic
 lab=Vin_p
 }
 
-C {lab_wire.sym} 370 -200 0 0 {
-name=p6
+C {lab_wire.sym} 390 -200 0 0 {
+name=p7
 sig_type=std_logic
 lab=Vin_n
 }
 
 C {lab_wire.sym} 400 -180 0 0 {
-name=p7
+name=p8
 sig_type=std_logic
 lab=Vbias
 }
 
 
-C {code_shown.sym} 20 -650 0 0 {
+C {noconn.sym} 390 -220 0 0 {
+name=NC_VINP
+}
+
+C {noconn.sym} 390 -200 0 0 {
+name=NC_VINN
+}
+
+
+C {code_shown.sym} 50 -680 0 0 {
 name=s1
 only_toplevel=true
 value="
+* ==========================================================
+* OTA DIFFERENTIAL NOISE CHARACTERIZATION
+* ==========================================================
+*
+* DC common-mode:
+* Vin_p = Vin_n = 0.4 V
+*
+* AC differential excitation:
+* VDIFF = 1 V
+*
+* Vin_p = 0.4 + Vdiff/2
+* Vin_n = 0.4 - Vdiff/2
+*
+* Therefore:
+* Vin_p - Vin_n = Vdiff
+* ==========================================================
+
+VCMIN vcm_noise 0 DC 0.4
+VDIFF vdiff 0 DC 0 AC 1
+
+BIP vin_p 0 V=V(vcm_noise)+0.5*V(vdiff)
+BIN vin_n 0 V=V(vcm_noise)-0.5*V(vdiff)
+
+.nodeset V(vin_p)=0.4
+.nodeset V(vin_n)=0.4
+.nodeset V(vout_p)=0.9184
+.nodeset V(vout_n)=0.9184
+
 .control
 save all
 
+* ----------------------------------------------------------
+* CHECK NOMINAL OPERATING POINT
+* ----------------------------------------------------------
+
 op
 
-echo ===== BASELINE OTA OPERATING POINT =====
-print v(vbias)
+echo ===== NOISE OPERATING POINT =====
 print v(vin_p)
 print v(vin_n)
 print v(vout_p)
 print v(vout_n)
 
-ac dec 100 1 1G
+* ----------------------------------------------------------
+* DIFFERENTIAL NOISE ANALYSIS
+*
+* fs  = 4 MHz
+* OSR = 80
+*
+* Signal bandwidth:
+* BW = fs / (2*OSR)
+*    = 4 MHz / 160
+*    = 25 kHz
+* ----------------------------------------------------------
 
-let vid = v(vin_p)-v(vin_n)
-let vod = v(vout_p)-v(vout_n)
+noise v(vout_p,vout_n) VDIFF dec 100 1 25k
 
-let av = vod/vid
-let loopgain = -av
+setplot noise1
 
-let gain_db = db(loopgain)
-let phase_deg = 180/pi*cph(loopgain)
+echo ===== NOISE SPECTRAL DENSITY =====
+plot onoise_spectrum
+plot inoise_spectrum
 
-meas ac A0 FIND gain_db AT=1
-meas ac UGF WHEN gain_db=0 CROSS=1
-meas ac PHASE_UGF FIND phase_deg WHEN gain_db=0 CROSS=1
+setplot noise2
 
-echo ===== BASELINE OTA AC RESULTS =====
-print A0
-print UGF
-print PHASE_UGF
-
-plot gain_db
-plot phase_deg
+echo ===== INTEGRATED NOISE 1 Hz - 25 kHz =====
+print onoise_total
+print inoise_total
 
 .endc
 "
@@ -199,6 +225,6 @@ corner=tt
 }
 
 
-C {blocks/01_OTA/xschem/OTA.sym} 560 -230 0 0 {
+C {blocks/01_OTA/xschem/OTA_experiment.sym} 560 -230 0 0 {
 name=x1
 }
