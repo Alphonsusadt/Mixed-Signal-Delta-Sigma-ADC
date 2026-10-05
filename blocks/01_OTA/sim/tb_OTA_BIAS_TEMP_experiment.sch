@@ -116,27 +116,26 @@ C {code_shown.sym} 20 -780 0 0 {
 name=s1
 only_toplevel=true
 value="
-.temp 125
+.temp -40
 
 .control
 save all
 
-* ==========================================================
-* VBIAS SWEEP AT FIXED TEMPERATURE
-* Target output common-mode = nominal 27C value
-* ==========================================================
-
-dc V6 0.30 0.80 0.001
+dc V6 0.40 0.60 0.001
 
 let vocm = (v(vout_p)+v(vout_n))/2
 
-echo ===== VBIAS TEMPERATURE SWEEP =====
-
 meas dc VBIAS_OPT WHEN vocm=0.91844 CROSS=1
+meas dc VOUTP_OPT FIND v(vout_p) WHEN vocm=0.91844 CROSS=1
+meas dc VOUTN_OPT FIND v(vout_n) WHEN vocm=0.91844 CROSS=1
+meas dc VOCM_OPT FIND vocm WHEN vocm=0.91844 CROSS=1
 
+echo ===== VBIAS -40C CHECK =====
 print VBIAS_OPT
+print VOUTP_OPT
+print VOUTN_OPT
+print VOCM_OPT
 
-plot v(vout_p) v(vout_n)
 plot vocm
 
 .endc

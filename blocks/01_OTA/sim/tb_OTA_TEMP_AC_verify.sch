@@ -58,8 +58,7 @@ value="DC 0.4 AC 0.5 180"
 }
 C {vsource.sym} 370 -90 0 0 {
 name=V6
-value=0.470423
-}
+value=0.470423}
 C {gnd.sym} 30 -40 0 0 {name=l1 lab=0}
 C {gnd.sym} 90 -40 0 0 {name=l2 lab=0}
 C {gnd.sym} 150 -40 0 0 {name=l3 lab=0}
@@ -112,7 +111,7 @@ name=p7
 sig_type=std_logic
 lab=Vbias
 }
-C {code_shown.sym} 40 -1280 0 0 {
+C {code_shown.sym} 30 -1350 0 0 {
 name=s1
 only_toplevel=true
 value="
@@ -121,28 +120,26 @@ value="
 .control
 save all
 
-* =========================================
-* OPERATING POINT
-* =========================================
+* ==========================================================
+* -40C AC VALIDATION USING VERIFIED VBIAS
+* Vbias = 0.470423 V
+* ==========================================================
 
 op
 
+let vocm = (v(vout_p)+v(vout_n))/2
 let idd = -i(V1)
 let pdc = v(vcc)*idd
 
-echo ===== PVT OPERATING POINT =====
-print v(vcc)
+echo ===== -40C OPERATING POINT =====
 print v(vbias)
 print v(vin_p)
 print v(vin_n)
 print v(vout_p)
 print v(vout_n)
+print vocm
 print idd
 print pdc
-
-* =========================================
-* AC CHARACTERIZATION
-* =========================================
 
 ac dec 100 1 1G
 
@@ -159,15 +156,19 @@ meas ac A0 FIND gain_db AT=1
 meas ac UGF WHEN gain_db=0 CROSS=1
 meas ac PHASE_UGF FIND phase_deg WHEN gain_db=0 CROSS=1
 
-let PM = 180 + PHASE_UGF
+let PM = 180+PHASE_UGF
 
-echo ===== PVT AC RESULTS =====
+echo ===== -40C AC RESULTS =====
 print A0
 print UGF
 print PHASE_UGF
 print PM
 
-.endc"
+plot gain_db
+plot phase_deg
+
+.endc
+"
 }
 C {sky130_fd_pr/corner.sym} 780 -400 0 0 {
 name=CORNER
