@@ -58,7 +58,7 @@ value="DC 0.4 AC 0.5 180"
 }
 C {vsource.sym} 370 -90 0 0 {
 name=V6
-value=0.507621
+value=0.470423
 }
 C {gnd.sym} 30 -40 0 0 {name=l1 lab=0}
 C {gnd.sym} 90 -40 0 0 {name=l2 lab=0}

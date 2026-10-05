@@ -111,19 +111,19 @@ name=p7
 sig_type=std_logic
 lab=Vbias
 }
-C {code_shown.sym} 30 -1350 0 0 {
+C {code_shown.sym} 40 -1300 0 0 {
 name=s1
 only_toplevel=true
-value="
-.temp -40
+value=
+".temp -40
+
+.nodeset V(vin_p)=0.4
+.nodeset V(vin_n)=0.4
+.nodeset V(vout_p)=0.91844
+.nodeset V(vout_n)=0.91844
 
 .control
 save all
-
-* ==========================================================
-* -40C AC VALIDATION USING VERIFIED VBIAS
-* Vbias = 0.470423 V
-* ==========================================================
 
 op
 

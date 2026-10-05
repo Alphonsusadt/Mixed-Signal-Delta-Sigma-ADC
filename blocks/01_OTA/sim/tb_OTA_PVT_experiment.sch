@@ -58,7 +58,7 @@ value="DC 0.4 AC 0.5 180"
 }
 C {vsource.sym} 370 -90 0 0 {
 name=V6
-value=0.470423
+value=0.507621
 }
 C {gnd.sym} 30 -40 0 0 {name=l1 lab=0}
 C {gnd.sym} 90 -40 0 0 {name=l2 lab=0}
@@ -116,7 +116,7 @@ C {code_shown.sym} 40 -1280 0 0 {
 name=s1
 only_toplevel=true
 value="
-.temp -40
+.temp 27
 
 .control
 save all
@@ -172,7 +172,7 @@ print PM
 C {sky130_fd_pr/corner.sym} 780 -400 0 0 {
 name=CORNER
 only_toplevel=false
-corner=tt
+corner=ff
 }
 C {blocks/01_OTA/xschem/OTA_experiment.sym} 560 -230 0 0 {
 name=x1
