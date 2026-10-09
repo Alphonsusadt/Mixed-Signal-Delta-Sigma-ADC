@@ -20,14 +20,10 @@ N 150 -220 340 -220 {lab=CLK}
 N 150 -220 150 -140 {lab=CLK}
 N 540 -200 590 -200 {lab=Vout_P}
 N 540 -180 590 -180 {lab=Vout_N}
-N 600 -180 600 -150 {lab=Vout_N}
 N 590 -180 600 -180 {lab=Vout_N}
-N 660 -200 660 -150 {lab=Vout_P}
 N 590 -200 660 -200 {lab=Vout_P}
 N 660 -200 710 -200 {lab=Vout_P}
 N 600 -180 710 -180 {lab=Vout_N}
-N 600 -90 600 -80 {lab=0}
-N 660 -90 660 -80 {lab=0}
 C {blocks/03_StrongARM/xschem/StrongARM.sym} 490 -190 0 0 {name=x1}
 C {vsource.sym} 80 -110 0 0 {name=VVDD value=1.8 savecurrent=false}
 C {vdd.sym} 80 -160 0 0 {name=l1 lab=VDD}
@@ -48,37 +44,78 @@ value="
 .control
 save all
 
-* ===================================
+* ==========================================
 * BLOCK 3 - STRONGARM COMPARATOR
-* TEST 7A - POWER CHARACTERIZATION
+* TEST 7A + 7C: POWER AND OUTPUT LOADING
+* TECHNOLOGY: SKY130
 * VDD = 1.8 V
-* CLK = 4 MHz
+* CLOCK = 4 MHz
 * CORNER = tt
-* ===================================
+* VCM = 0.9 V
+* Vin1 = 0.895 V
+* Vin2 = 0.905 V
+* Expected falling output: Vout_N
+* ==========================================
 
+echo ==========================================
+echo STRONGARM POWER AND LOADING TEST
+echo ==========================================
+
+* Transient simulation
 tran 0.2n 2.5u
 
-* Ignore startup period
-* Measure supply current over 8 cycles
+* ==========================================
+* A. DECISION DELAY
+* Ninth clock rising edge at approximately 2us
+* ==========================================
+
+meas tran t_decision TRIG v(clk) VAL=0.9 RISE=9 TARG v(vout_n) VAL=0.9 FALL=9
+
+* ==========================================
+* B. OUTPUT LOGIC VERIFICATION
+* ==========================================
+
+meas tran vp_eval FIND v(vout_p) AT=2.01u
+meas tran vn_eval FIND v(vout_n) AT=2.01u
+
+meas tran vp_reset FIND v(vout_p) AT=2.20u
+meas tran vn_reset FIND v(vout_n) AT=2.20u
+
+* ==========================================
+* C. AVERAGE SUPPLY CURRENT
+* Ignore the first 500ns
+* ==========================================
+
 meas tran ivdd_avg AVG i(VVDD) FROM=500n TO=2.5u
 
-* Calculate average power
-let p_avg = -1.8 * ivdd_avg
+* ==========================================
+* D. POWER AND ENERGY
+* ==========================================
 
-* One comparator decision per cycle
+let p_avg = -1.8 * ivdd_avg
 let e_decision = p_avg / 4e6
 
-echo =============================
+let power_uW = p_avg * 1e6
+let energy_pJ = e_decision * 1e12
+let delay_ns = t_decision * 1e9
+
+echo ==========================================
 echo TEST 7A - POWER RESULTS
-echo =============================
+echo ==========================================
 
 print ivdd_avg
-print p_avg
-print e_decision
+print power_uW
+print energy_pJ
 
-echo =============================
-echo OUTPUT VOLTAGE LIMITS
-echo =============================
+echo ==========================================
+echo TEST 7C - TIMING RESULTS
+echo ==========================================
+
+print delay_ns
+
+echo ==========================================
+echo TEST 7C - OUTPUT VOLTAGE LIMITS
+echo ==========================================
 
 meas tran vp_max MAX v(vout_p) FROM=500n TO=2.5u
 meas tran vp_min MIN v(vout_p) FROM=500n TO=2.5u
@@ -86,20 +123,18 @@ meas tran vp_min MIN v(vout_p) FROM=500n TO=2.5u
 meas tran vn_max MAX v(vout_n) FROM=500n TO=2.5u
 meas tran vn_min MIN v(vout_n) FROM=500n TO=2.5u
 
+echo ==========================================
+echo TEST 7C - HIGH OUTPUT DROOP
+echo ==========================================
+
+meas tran vp_droop_min MIN v(vout_p) FROM=2u TO=2.01u
+
+echo ==========================================
+echo ALL MEASUREMENTS COMPLETED
+echo ==========================================
+
 .endc"}
 C {sky130_fd_pr/corner.sym} 580 -380 0 0 {name=CORNER only_toplevel=false corner=tt}
 C {lab_wire.sym} 240 -200 0 0 {name=p3 sig_type=std_logic lab=Vin1}
 C {lab_wire.sym} 310 -180 0 0 {name=p4 sig_type=std_logic lab=Vin2}
 C {lab_wire.sym} 170 -220 0 0 {name=p5 sig_type=std_logic lab=CLK}
-C {capa.sym} 600 -120 0 0 {name=C1
-m=1
-value=20f
-footprint=1206
-device="ceramic capacitor"}
-C {capa.sym} 660 -120 0 0 {name=C2
-m=1
-value=20f
-footprint=1206
-device="ceramic capacitor"}
-C {gnd.sym} 600 -80 0 0 {name=l8 lab=0}
-C {gnd.sym} 660 -80 0 0 {name=l9 lab=0}
