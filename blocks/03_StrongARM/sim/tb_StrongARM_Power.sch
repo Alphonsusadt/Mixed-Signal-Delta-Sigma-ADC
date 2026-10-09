@@ -24,10 +24,10 @@ C {blocks/03_StrongARM/xschem/StrongARM.sym} 490 -190 0 0 {name=x1}
 C {vsource.sym} 80 -110 0 0 {name=VVDD value=1.8 savecurrent=false}
 C {vdd.sym} 80 -160 0 0 {name=l1 lab=VDD}
 C {vdd.sym} 540 -240 0 0 {name=l2 lab=VDD}
-C {vsource.sym} 230 -110 0 0 {name=VVin1 value=0.905 savecurrent=false}
+C {vsource.sym} 230 -110 0 0 {name=VVin1 value=0.895 savecurrent=false}
 C {gnd.sym} 80 -70 0 0 {name=l3 lab=0}
 C {gnd.sym} 230 -70 0 0 {name=l4 lab=0}
-C {vsource.sym} 300 -110 0 0 {name=VVin2 value=0.895 savecurrent=false}
+C {vsource.sym} 300 -110 0 0 {name=VVin2 value=0.905 savecurrent=false}
 C {gnd.sym} 300 -70 0 0 {name=l5 lab=0}
 C {vsource.sym} 150 -110 0 0 {name=VPulse value="PULSE(0 1.8 0 1n 1n 125n 250n)" savecurrent=false}
 C {gnd.sym} 150 -70 0 0 {name=l6 lab=0}
@@ -78,7 +78,7 @@ meas tran vp_min MIN v(vout_p) FROM=500n TO=2.5u
 meas tran vn_max MAX v(vout_n) FROM=500n TO=2.5u
 meas tran vn_min MIN v(vout_n) FROM=500n TO=2.5u
 
-.endc"}
+.endc"}
 C {sky130_fd_pr/corner.sym} 580 -380 0 0 {name=CORNER only_toplevel=false corner=tt}
 C {lab_wire.sym} 240 -200 0 0 {name=p3 sig_type=std_logic lab=Vin1}
 C {lab_wire.sym} 310 -180 0 0 {name=p4 sig_type=std_logic lab=Vin2}
