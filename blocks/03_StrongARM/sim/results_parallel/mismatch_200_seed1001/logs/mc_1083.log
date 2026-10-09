@@ -1,0 +1,392 @@
+
+Note: Compatibility modes selected: hs a
+
+
+Circuit: * strongarm local mismatch sample; seed=1083
+
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+option SCALE: Scale is set to 1e-06 for instance and model parameters
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                      0.86
+vin2                                      0.94
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.728997
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                         -1.312e-11
+
+
+No. of Data Rows : 1874
+vp_lo               =  1.80000e+00
+vn_lo               =  2.26577e-06
+MC_ENDPOINT_LO seed=1083
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                      0.94
+vin2                                      0.86
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.729682
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.31221e-11
+
+
+No. of Data Rows : 1874
+vp_hi               =  2.65033e-06
+vn_hi               =  1.80000e+00
+MC_ENDPOINT_HI seed=1083
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                       0.9
+vin2                                       0.9
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713863
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30742e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  1.79996e+00
+vn_mid              =  5.92873e-06
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                      0.92
+vin2                                      0.88
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.718485
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30881e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  2.46426e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                      0.91
+vin2                                      0.89
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.715125
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30779e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  6.32959e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                     0.905
+vin2                                     0.895
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.714212
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30752e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  -2.30763e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                    0.9025
+vin2                                    0.8975
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713965
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30744e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  -1.06419e-05
+vn_mid              =  1.80001e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                   0.90125
+vin2                                   0.89875
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713896
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30742e-11
+
+
+No. of Data Rows : 1875
+vp_mid              =  -1.49315e-05
+vn_mid              =  1.80001e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                  0.900625
+vin2                                  0.899375
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713875
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30741e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  -8.54429e-07
+vn_mid              =  1.79998e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                  0.900313
+vin2                                  0.899687
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713867
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30741e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  2.34724e-06
+vn_mid              =  1.79999e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                  0.900156
+vin2                                  0.899844
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713865
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30742e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  2.75700e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                  0.900078
+vin2                                  0.899922
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713864
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30741e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  2.82373e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                  0.900039
+vin2                                  0.899961
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713863
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30741e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  2.83982e-06
+vn_mid              =  1.80000e+00
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+Using SPARSE 1.3 as Direct Linear Solver
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+vdd                                        1.8
+vin1                                   0.90002
+vin2                                   0.89998
+clk                                          0
+x1.p                                       1.8
+vout_p                                     1.8
+vout_n                                     1.8
+x1.q                                       1.8
+x1.tail                               0.713863
+vpulse#branch                                0
+vvin2#branch                                 0
+vvin1#branch                                 0
+vvdd#branch                       -1.30741e-11
+
+
+No. of Data Rows : 1876
+vp_mid              =  2.84174e-06
+vn_mid              =  1.80000e+00
+MC_BOUNDARY seed=1083 lo_V=0 hi_V=3.90625E-05
+Note: Simulation executed from .control section 

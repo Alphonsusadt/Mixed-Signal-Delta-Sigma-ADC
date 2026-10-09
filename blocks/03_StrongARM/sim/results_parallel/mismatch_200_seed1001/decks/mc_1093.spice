@@ -1,0 +1,78 @@
+* StrongARM local mismatch sample; seed=1093
+.option seedinfo
+.option seed=1093
+.lib "/foss/pdks/ciel/sky130/versions/7b70722e33c03fcb5dabcf4d479fb0822d9251c9/sky130A/libs.tech/combined/sky130.lib.spice" tt_mm
+VVDD VDD 0 1.8
+VVin1 Vin1 0 0.9
+VVin2 Vin2 0 0.9
+VPulse CLK 0 PULSE(0 1.8 0 1n 1n 125n 250n)
+X1 VDD CLK Vout_P Vout_N Vin1 Vin2 0 StrongARM
+* Optional realistic latch/input loading must be characterized separately.
+* StrongARM 11T SKY130 snapshot from user's verified Xschem netlist.
+* Device order D G S B; W and L use micrometers because SKY130 model sets scale=1u.
+.subckt StrongARM VDD CLK Vout_P Vout_N Vin1 Vin2 GND
+XS1 P CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333 nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XS3 Vout_P CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333 nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XM5 Vout_P Vout_N VDD VDD sky130_fd_pr__pfet_01v8 L=0.3 W=5 nf=1 ad=1.45 as=1.45 pd=10.58 ps=10.58 nrd=0.058 nrs=0.058 sa=0 sb=0 sd=0 mult=1
+XM6 Vout_N Vout_P VDD VDD sky130_fd_pr__pfet_01v8 L=0.3 W=5 nf=1 ad=1.45 as=1.45 pd=10.58 ps=10.58 nrd=0.058 nrs=0.058 sa=0 sb=0 sd=0 mult=1
+XS4 Vout_N CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333 nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XS2 Q CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333 nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XM3 Vout_P Vout_N P GND sky130_fd_pr__nfet_01v8 L=0.3 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XM4 Vout_N Vout_P Q GND sky130_fd_pr__nfet_01v8 L=0.3 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XM1 P Vin1 TAIL GND sky130_fd_pr__nfet_01v8 L=0.5 W=10 nf=1 ad=2.9 as=2.9 pd=20.58 ps=20.58 nrd=0.029 nrs=0.029 sa=0 sb=0 sd=0 mult=1
+XM2 Q Vin2 TAIL GND sky130_fd_pr__nfet_01v8 L=0.5 W=10 nf=1 ad=2.9 as=2.9 pd=20.58 ps=20.58 nrd=0.029 nrs=0.029 sa=0 sb=0 sd=0 mult=1
+XM7 TAIL CLK GND GND sky130_fd_pr__nfet_01v8 L=0.3 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+.ends StrongARM
+.control
+set noaskquit
+setplot const
+let lo = -0.080000000
+let hi = 0.080000000
+setplot const
+let dv = lo
+let vip = 0.9 + dv/2
+let vin = 0.9 - dv/2
+alter VVin1 $&vip
+alter VVin2 $&vin
+tran 0.2n 370n
+meas tran vp_lo FIND v(vout_p) AT=362.5n
+meas tran vn_lo FIND v(vout_n) AT=362.5n
+echo MC_ENDPOINT_LO seed=1093
+if vp_lo < 0.9
+  echo MC_ERROR_BAD_LOW_ENDPOINT
+end
+setplot const
+let dv = hi
+let vip = 0.9 + dv/2
+let vin = 0.9 - dv/2
+alter VVin1 $&vip
+alter VVin2 $&vin
+tran 0.2n 370n
+meas tran vp_hi FIND v(vout_p) AT=362.5n
+meas tran vn_hi FIND v(vout_n) AT=362.5n
+echo MC_ENDPOINT_HI seed=1093
+if vp_hi > 0.9
+  echo MC_ERROR_BAD_HIGH_ENDPOINT
+end
+repeat 12
+setplot const
+let dv = (lo + hi)/2
+let vip = 0.9 + dv/2
+let vin = 0.9 - dv/2
+alter VVin1 $&vip
+alter VVin2 $&vin
+tran 0.2n 370n
+meas tran vp_mid FIND v(vout_p) AT=362.5n
+meas tran vn_mid FIND v(vout_n) AT=362.5n
+if vp_mid < 0.9
+  setplot const
+  let hi = dv
+else
+  setplot const
+  let lo = dv
+end
+end
+setplot const
+echo MC_BOUNDARY seed=1093 lo_V=$&lo hi_V=$&hi
+.endc
+.end

@@ -1,0 +1,2 @@
+seed,offset_low_mV,offset_high_mV,offset_est_mV,resolution_uV,status,startup_lib_warning
+1001,2.6171900000000003,2.65625,2.6367200000000004,39.06000000000005,BRACKETED,False
