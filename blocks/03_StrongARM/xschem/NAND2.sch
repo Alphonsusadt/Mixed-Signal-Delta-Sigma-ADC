@@ -5,28 +5,28 @@ V {}
 S {}
 F {}
 E {}
-N 220 -520 220 -490 {lab=Y}
-N 220 -490 420 -490 {lab=Y}
-N 420 -520 420 -490 {lab=Y}
-N 220 -610 220 -580 {lab=xxx}
-N 220 -610 420 -610 {lab=xxx}
-N 420 -610 420 -580 {lab=xxx}
-N 220 -580 220 -550 {lab=xxx}
-N 420 -580 420 -550 {lab=xxx}
-N 320 -360 320 -280 {lab=#net1}
-N 320 -490 320 -420 {lab=Y}
-N 320 -220 320 -170 {lab=GND}
-N 320 -640 320 -610 {lab=xxx}
-N 320 -390 350 -390 {lab=GND}
-N 350 -390 350 -190 {lab=GND}
-N 320 -190 350 -190 {lab=GND}
-N 320 -250 320 -220 {lab=GND}
-N 160 -550 180 -550 {lab=A}
-N 260 -390 280 -390 {lab=A}
-N 260 -250 280 -250 {lab=B}
-N 370 -550 380 -550 {lab=B}
-N 320 -450 390 -450 {lab=Y}
-C {sky130_fd_pr/pfet_01v8.sym} 200 -550 0 0 {name=M1
+N 220 -420 520 -420 {lab=VCC}
+N 220 -420 220 -330 {lab=VCC}
+N 520 -420 520 -330 {lab=VCC}
+N 220 -300 270 -300 {lab=VCC}
+N 520 -300 570 -300 {lab=VCC}
+N 220 -270 220 -210 {lab=Y}
+N 520 -270 520 -210 {lab=Y}
+N 220 -210 370 -210 {lab=Y}
+N 370 -210 520 -210 {lab=Y}
+N 520 -210 660 -210 {lab=Y}
+N 370 -210 370 -130 {lab=Y}
+N 370 -70 370 10 {lab=MID}
+N 370 -100 420 -100 {lab=GND}
+N 370 70 370 140 {lab=GND}
+N 370 40 420 40 {lab=GND}
+N 100 -300 180 -300 {lab=A}
+N 400 -300 480 -300 {lab=B}
+N 260 -100 330 -100 {lab=A}
+N 260 40 330 40 {lab=B}
+N 420 -460 420 -420 {lab=VCC}
+N 370 140 370 170 {lab=GND}
+C {sky130_fd_pr/pfet_01v8.sym} 200 -300 0 0 {name=MP1
 W=2
 L=0.15
 nf=1
@@ -40,7 +40,7 @@ sa=0 sb=0 sd=0
 model=pfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/pfet_01v8.sym} 400 -550 0 0 {name=M2
+C {sky130_fd_pr/pfet_01v8.sym} 500 -300 0 0 {name=MP2
 W=2
 L=0.15
 nf=1
@@ -54,10 +54,10 @@ sa=0 sb=0 sd=0
 model=pfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_01v8.sym} 300 -390 0 0 {name=M3
+C {sky130_fd_pr/nfet_01v8.sym} 350 -100 0 0 {name=MN1
 W=2
 L=0.15
-nf=1 
+nf=1
 mult=1
 ad="expr('int((@nf + 1)/2) * @W / @nf * 0.29')"
 pd="expr('2*int((@nf + 1)/2) * (@W / @nf + 0.29)')"
@@ -68,10 +68,10 @@ sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet_01v8.sym} 300 -250 0 0 {name=M4
+C {sky130_fd_pr/nfet_01v8.sym} 350 40 0 0 {name=MN2
 W=2
 L=0.15
-nf=1 
+nf=1
 mult=1
 ad="expr('int((@nf + 1)/2) * @W / @nf * 0.29')"
 pd="expr('2*int((@nf + 1)/2) * (@W / @nf + 0.29)')"
@@ -82,13 +82,14 @@ sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
 }
-C {iopin.sym} 320 -640 0 0 {name=p1 lab=VCC
-}
-C {iopin.sym} 320 -170 0 0 {name=p2 lab=GND}
-C {ipin.sym} 130 -420 0 0 {name=p5 lab=A}
-C {ipin.sym} 130 -400 0 0 {name=p6 lab=B}
-C {opin.sym} 390 -450 0 0 {name=p7 lab=Y}
-C {lab_pin.sym} 160 -550 0 0 {name=p3 sig_type=std_logic lab=A}
-C {lab_pin.sym} 370 -550 0 0 {name=p4 sig_type=std_logic lab=B}
-C {lab_pin.sym} 260 -390 0 0 {name=p8 sig_type=std_logic lab=A}
-C {lab_pin.sym} 260 -250 0 0 {name=p9 sig_type=std_logic lab=B}
+C {devices/ipin.sym} 100 -300 0 0 {name=pA lab=A}
+C {devices/ipin.sym} 400 -300 0 0 {name=pB lab=B}
+C {devices/opin.sym} 660 -210 0 0 {name=pY lab=Y}
+C {devices/iopin.sym} 370 170 0 0 {name=pGND lab=GND}
+C {devices/iopin.sym} 420 -460 0 0 {name=pVCC lab=VCC}
+C {devices/lab_wire.sym} 270 -300 0 0 {name=lVCC1 lab=VCC}
+C {devices/lab_wire.sym} 570 -300 0 0 {name=lVCC2 lab=VCC}
+C {devices/lab_wire.sym} 260 -100 0 0 {name=lA2 lab=A}
+C {devices/lab_wire.sym} 260 40 0 0 {name=lB2 lab=B}
+C {devices/lab_wire.sym} 420 -100 0 0 {name=lGND1 lab=GND}
+C {devices/lab_wire.sym} 420 40 0 0 {name=lGND2 lab=GND}
