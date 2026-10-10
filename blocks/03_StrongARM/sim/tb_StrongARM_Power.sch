@@ -24,6 +24,10 @@ N 590 -180 600 -180 {lab=Vout_N}
 N 590 -200 660 -200 {lab=Vout_P}
 N 660 -200 710 -200 {lab=Vout_P}
 N 600 -180 710 -180 {lab=Vout_N}
+N 600 -80 600 -70 {lab=0}
+N 660 -80 660 -70 {lab=0}
+N 660 -200 660 -140 {lab=Vout_P}
+N 600 -180 600 -140 {lab=Vout_N}
 C {blocks/03_StrongARM/xschem/StrongARM.sym} 490 -190 0 0 {name=x1}
 C {vsource.sym} 80 -110 0 0 {name=VVDD value=1.8 savecurrent=false}
 C {vdd.sym} 80 -160 0 0 {name=l1 lab=VDD}
@@ -44,97 +48,115 @@ value="
 .control
 save all
 
-* ==========================================
+* ============================================
 * BLOCK 3 - STRONGARM COMPARATOR
-* TEST 7A + 7C: POWER AND OUTPUT LOADING
-* TECHNOLOGY: SKY130
-* VDD = 1.8 V
-* CLOCK = 4 MHz
-* CORNER = tt
-* VCM = 0.9 V
-* Vin1 = 0.895 V
-* Vin2 = 0.905 V
-* Expected falling output: Vout_N
-* ==========================================
+* TEST 7C - FINAL OUTPUT LOADING
+* SKY130 TT / VDD 1.8V / CLK 4MHz
+* BOTH INPUT POLARITIES
+* ============================================
 
-echo ==========================================
-echo STRONGARM POWER AND LOADING TEST
-echo ==========================================
+echo ============================================
+echo TEST 7C - FINAL CHARACTERIZATION
+echo ============================================
 
-* Transient simulation
-tran 0.2n 2.5u
+* ============================================
+* CASE A: Vin1 < Vin2
+* Vout_N should FALL
+* Vout_P should remain HIGH
+* ============================================
 
-* ==========================================
-* A. DECISION DELAY
-* Ninth clock rising edge at approximately 2us
-* ==========================================
+alter VVin1 0.895
+alter VVin2 0.905
 
-meas tran t_decision TRIG v(clk) VAL=0.9 RISE=9 TARG v(vout_n) VAL=0.9 FALL=9
+echo CASE A - NEGATIVE DIFFERENTIAL INPUT
 
-* ==========================================
-* B. OUTPUT LOGIC VERIFICATION
-* ==========================================
+tran 0.05n 2.5u
 
-meas tran vp_eval FIND v(vout_p) AT=2.01u
-meas tran vn_eval FIND v(vout_n) AT=2.01u
+meas tran delay_A TRIG v(clk) VAL=0.9 RISE=9 TARG v(vout_n) VAL=0.9 FALL=9
 
-meas tran vp_reset FIND v(vout_p) AT=2.20u
-meas tran vn_reset FIND v(vout_n) AT=2.20u
+meas tran vp_eval_A FIND v(vout_p) AT=2.01u
+meas tran vn_eval_A FIND v(vout_n) AT=2.01u
 
-* ==========================================
-* C. AVERAGE SUPPLY CURRENT
-* Ignore the first 500ns
-* ==========================================
+meas tran vp_reset_A FIND v(vout_p) AT=2.20u
+meas tran vn_reset_A FIND v(vout_n) AT=2.20u
 
-meas tran ivdd_avg AVG i(VVDD) FROM=500n TO=2.5u
+meas tran vp_droop_A MIN v(vout_p) FROM=2u TO=2.01u
 
-* ==========================================
-* D. POWER AND ENERGY
-* ==========================================
+meas tran vp_max_A MAX v(vout_p) FROM=500n TO=2.5u
+meas tran vn_max_A MAX v(vout_n) FROM=500n TO=2.5u
 
-let p_avg = -1.8 * ivdd_avg
-let e_decision = p_avg / 4e6
+meas tran vp_min_A MIN v(vout_p) FROM=500n TO=2.5u
+meas tran vn_min_A MIN v(vout_n) FROM=500n TO=2.5u
 
-let power_uW = p_avg * 1e6
-let energy_pJ = e_decision * 1e12
-let delay_ns = t_decision * 1e9
+meas tran ivdd_A AVG i(VVDD) FROM=500n TO=2.5u
 
-echo ==========================================
-echo TEST 7A - POWER RESULTS
-echo ==========================================
+let power_A_uW = -1.8 * ivdd_A * 1e6
+let energy_A_pJ = power_A_uW / 4
+let delay_A_ns = delay_A * 1e9
 
-print ivdd_avg
-print power_uW
-print energy_pJ
+echo CASE A SUMMARY
+print power_A_uW
+print energy_A_pJ
+print delay_A_ns
 
-echo ==========================================
-echo TEST 7C - TIMING RESULTS
-echo ==========================================
+* ============================================
+* CASE B: Vin1 > Vin2
+* Vout_P should FALL
+* Vout_N should remain HIGH
+* ============================================
 
-print delay_ns
+alter VVin1 0.905
+alter VVin2 0.895
 
-echo ==========================================
-echo TEST 7C - OUTPUT VOLTAGE LIMITS
-echo ==========================================
+echo CASE B - POSITIVE DIFFERENTIAL INPUT
 
-meas tran vp_max MAX v(vout_p) FROM=500n TO=2.5u
-meas tran vp_min MIN v(vout_p) FROM=500n TO=2.5u
+tran 0.05n 2.5u
 
-meas tran vn_max MAX v(vout_n) FROM=500n TO=2.5u
-meas tran vn_min MIN v(vout_n) FROM=500n TO=2.5u
+meas tran delay_B TRIG v(clk) VAL=0.9 RISE=9 TARG v(vout_p) VAL=0.9 FALL=9
 
-echo ==========================================
-echo TEST 7C - HIGH OUTPUT DROOP
-echo ==========================================
+meas tran vp_eval_B FIND v(vout_p) AT=2.01u
+meas tran vn_eval_B FIND v(vout_n) AT=2.01u
 
-meas tran vp_droop_min MIN v(vout_p) FROM=2u TO=2.01u
+meas tran vp_reset_B FIND v(vout_p) AT=2.20u
+meas tran vn_reset_B FIND v(vout_n) AT=2.20u
 
-echo ==========================================
-echo ALL MEASUREMENTS COMPLETED
-echo ==========================================
+meas tran vn_droop_B MIN v(vout_n) FROM=2u TO=2.01u
+
+meas tran vp_max_B MAX v(vout_p) FROM=500n TO=2.5u
+meas tran vn_max_B MAX v(vout_n) FROM=500n TO=2.5u
+
+meas tran vp_min_B MIN v(vout_p) FROM=500n TO=2.5u
+meas tran vn_min_B MIN v(vout_n) FROM=500n TO=2.5u
+
+meas tran ivdd_B AVG i(VVDD) FROM=500n TO=2.5u
+
+let power_B_uW = -1.8 * ivdd_B * 1e6
+let energy_B_pJ = power_B_uW / 4
+let delay_B_ns = delay_B * 1e9
+
+echo CASE B SUMMARY
+print power_B_uW
+print energy_B_pJ
+print delay_B_ns
+
+echo ============================================
+echo BOTH POLARITIES COMPLETED
+echo ============================================
 
 .endc"}
 C {sky130_fd_pr/corner.sym} 580 -380 0 0 {name=CORNER only_toplevel=false corner=tt}
 C {lab_wire.sym} 240 -200 0 0 {name=p3 sig_type=std_logic lab=Vin1}
 C {lab_wire.sym} 310 -180 0 0 {name=p4 sig_type=std_logic lab=Vin2}
 C {lab_wire.sym} 170 -220 0 0 {name=p5 sig_type=std_logic lab=CLK}
+C {capa.sym} 600 -110 0 0 {name=C1
+m=1
+value=50f
+footprint=1206
+device="ceramic capacitor"}
+C {gnd.sym} 600 -70 0 0 {name=l8 lab=0}
+C {capa.sym} 660 -110 0 0 {name=C2
+m=1
+value=50f
+footprint=1206
+device="ceramic capacitor"}
+C {gnd.sym} 660 -70 0 0 {name=l9 lab=0}
