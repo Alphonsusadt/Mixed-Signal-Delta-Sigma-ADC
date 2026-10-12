@@ -1,0 +1,44 @@
+v {xschem version=3.4.8RC file_version=1.3}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname"
+template="name=x1"}
+V {}
+S {}
+F {}
+E {}
+
+L 4 -170 -110 170 -110 {}
+L 4 170 -110 170 110 {}
+L 4 170 110 -170 110 {}
+L 4 -170 110 -170 -110 {}
+T {STRONGARM + SR LATCH} -135 -25 0 0 0.38 0.38 {}
+T {11T + 8T SKY130} -115 3 0 0 0.32 0.32 {}
+T {@name} 10 -82 0 0 0.25 0.25 {}
+L 4 -230 -60 -170 -60 {}
+B 5 -232.5 -62.5 -227.5 -57.5 {name=Vin1 dir=in pinnumber=1}
+T {Vin1} -224 -73 0 0 0.26 0.26 {}
+L 4 -230 -20 -170 -20 {}
+B 5 -232.5 -22.5 -227.5 -17.5 {name=Vin2 dir=in pinnumber=2}
+T {Vin2} -224 -33 0 0 0.26 0.26 {}
+L 4 -230 40 -170 40 {}
+B 5 -232.5 37.5 -227.5 42.5 {name=CLK dir=in pinnumber=3}
+T {CLK} -224 27 0 0 0.26 0.26 {}
+L 4 30 110 30 150 {}
+B 5 27.5 147.5 32.5 152.5 {name=VDD dir=inout pinnumber=4}
+T {VDD} 39 137 0 0 0.26 0.26 {}
+L 4 -30 110 -30 150 {}
+B 5 -32.5 147.5 -27.5 152.5 {name=GND dir=inout pinnumber=5}
+T {GND} -24 137 0 0 0.26 0.26 {}
+L 4 230 -70 170 -70 {}
+B 5 227.5 -72.5 232.5 -67.5 {name=Q dir=out pinnumber=6}
+T {Q} 239 -83 0 0 0.26 0.26 {}
+L 4 230 -30 170 -30 {}
+B 5 227.5 -32.5 232.5 -27.5 {name=QB dir=out pinnumber=7}
+T {QB} 239 -43 0 0 0.26 0.26 {}
+L 4 230 30 170 30 {}
+B 5 227.5 27.5 232.5 32.5 {name=Vout_P dir=out pinnumber=8}
+T {Vout_P} 239 17 0 0 0.26 0.26 {}
+L 4 230 70 170 70 {}
+B 5 227.5 67.5 232.5 72.5 {name=Vout_N dir=out pinnumber=9}
+T {Vout_N} 239 57 0 0 0.26 0.26 {}
