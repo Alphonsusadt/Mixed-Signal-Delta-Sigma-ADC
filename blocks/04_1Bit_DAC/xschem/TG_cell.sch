@@ -15,7 +15,7 @@ N 390 -350 390 -320 {lab=CLK_P}
 N 390 -170 390 -150 {lab=CLK_N}
 C {sky130_fd_pr/pfet3_01v8.sym} 390 -300 1 0 {
 name=MP
-W=8
+W=256
 L=0.15
 body=VDD
 nf=1
@@ -39,7 +39,7 @@ spiceprefix=X
 }
 C {sky130_fd_pr/nfet3_01v8.sym} 390 -190 3 0 {
 name=MN
-W=4
+W=8
 L=0.15
 body=GND
 nf=1
