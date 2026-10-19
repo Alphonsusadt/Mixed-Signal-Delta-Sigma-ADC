@@ -10,3 +10,6 @@
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Block 5 simulation package
+/blocks/05_Switch_Network/sim/Block5_5C_Package/
