@@ -5,8 +5,8 @@ V {}
 S {}
 F {}
 E {}
-T {I2 | DIFFERENTIAL SWITCHED-CAPACITOR INTEGRATOR} 20 -400 0 0 0.5 0.5 {}
-T {4 MHz | candidate A1 | Cs=1pF, Cf=2pF, CL=200fF per side (trial)} 20 -350 0 0 0.3 0.3 {}
+T {I2 NEGATIVE | DIFFERENTIAL SWITCHED-CAPACITOR INTEGRATOR} 20 -400 0 0 0.5 0.5 {}
+T {4 MHz | GitHub 720a907; OTA compensation follows local cell | Cs=1pF, Cf=2pF, CL=200fF per side (trial)} 20 -350 0 0 0.3 0.3 {}
 T {Input -> sampling capacitors -> transfer switches -> OTA -> output} 20 -310 0 0 0.28 0.28 {}
 C {blocks/05_Switch_Network/xschem/TG_SC_LVT.sym} 200 0 0 0 {name=XSAMP_P }
 N 200 -100 200 -130 {}
@@ -114,7 +114,7 @@ N 620 600 620 900 {}
 N 620 900 700 900 {}
 N 900 900 940 900 {}
 C {lab_wire.sym} 940 900 0 0 {name=L44 lab=vcm}
-C {blocks/01_OTA/xschem/OTA_I2_Wired.sym} 1250 290 0 0 {name=XOTA2 }
+C {blocks/01_OTA/xschem/OTA_CMFB.sym} 1250 290 0 0 {name=XOTA2 }
 N 1000 0 1000 300 {}
 N 1000 300 1100 300 {}
 N 1000 600 1000 320 {}
@@ -155,7 +155,7 @@ N 1330 240 1360 240 {}
 C {lab_wire.sym} 1360 240 0 0 {name=L50 lab=vdd}
 N 1330 340 1360 340 {}
 C {lab_wire.sym} 1360 340 0 0 {name=L51 lab=0}
-C {blocks/02_CMFB/xschem/CMFB_I2_Wired.sym} 1250 40 0 0 {name=XSCM2 }
+C {blocks/02_CMFB/xschem/CMFB.sym} 1250 40 0 0 {name=XSCM2 }
 N 1360 -20 1410 -20 {}
 N 1410 -20 1410 200 {}
 N 1410 200 1080 200 {}
@@ -350,14 +350,14 @@ N 860 2290 860 2310 {}
 C {gnd.sym} 860 2310 0 0 {name=gVRSTB_SRC }
 T {VRSTB_SRC} 890 2250 0 0 0.22 0.22 {}
 T {PWL (see README)} 890 2280 0 0 0.22 0.22 {}
-C {vsource.sym} 1250 2260 0 0 {name=VINP_SRC value="PWL(0 .9 22.005u .9 22.006u .905 24.005u .905 24.006u .9 30u .9)" hide_texts=true}
+C {vsource.sym} 1250 2260 0 0 {name=VINP_SRC value="PWL(0 .9 22.005u .9 22.006u .895 24.005u .895 24.006u .9 30u .9)" hide_texts=true}
 N 1250 2230 1250 2200 {}
 C {lab_wire.sym} 1250 2200 0 0 {name=L100 lab=vin2_p}
 N 1250 2290 1250 2310 {}
 C {gnd.sym} 1250 2310 0 0 {name=gVINP_SRC }
 T {VINP_SRC} 1280 2250 0 0 0.22 0.22 {}
 T {PWL (see README)} 1280 2280 0 0 0.22 0.22 {}
-C {vsource.sym} 1640 2260 0 0 {name=VINN_SRC value="PWL(0 .9 22.005u .9 22.006u .895 24.005u .895 24.006u .9 30u .9)" hide_texts=true}
+C {vsource.sym} 1640 2260 0 0 {name=VINN_SRC value="PWL(0 .9 22.005u .9 22.006u .905 24.005u .905 24.006u .9 30u .9)" hide_texts=true}
 N 1640 2230 1640 2200 {}
 C {lab_wire.sym} 1640 2200 0 0 {name=L101 lab=vin2_n}
 N 1640 2290 1640 2310 {}
@@ -365,6 +365,7 @@ C {gnd.sym} 1640 2310 0 0 {name=gVINN_SRC }
 T {VINN_SRC} 1670 2250 0 0 0.22 0.22 {}
 T {PWL (see README)} 1670 2280 0 0 0.22 0.22 {}
 C {code.sym} 2070 1690 0 0 {name=SIM only_toplevel=true value="
+* GitHub 720a907: OTA C1/C2 MF=1000; no device sizes modified.
 * Trial characterization values only. Set from architecture before I2 signoff.
 .param CS2_TEST=1p CF2_TEST=2p CL2_TEST=200f I2_ARCH_CONFIRMED=0
 .option scale=1e-6 reltol=1e-5 abstol=1e-14 vntol=1e-8
@@ -383,7 +384,14 @@ meas tran VD_CYCLE8 FIND vd2 AT=24.014u
 meas tran VD_CYCLE24 FIND vd2 AT=28.014u
 meas tran CM_END AVG cm2 FROM=29u TO=30u
 meas tran CM_FIRST_END AVG cmfirst2 FROM=29u TO=30u
-wrdata waveform_I2_wired.dat v(VIN2_P) v(VIN2_N) v(SUM2_P) v(SUM2_N) v(OUT2_P) v(OUT2_N) v(VO1_2A) v(VO1_2B) v(VCMFB2) v(PHI1) v(PHI2) v(RST) i(VDD_SRC)
+meas tran CM_MIN MIN cm2 FROM=21u TO=30u
+meas tran CM_MAX MAX cm2 FROM=21u TO=30u
+meas tran DIFF_MIN MIN vd2 FROM=21u TO=30u
+meas tran DIFF_MAX MAX vd2 FROM=21u TO=30u
+let burst_delta=VD_CYCLE8-VD_BEFORE
+let hold_drift=VD_CYCLE24-VD_CYCLE8
+print burst_delta hold_drift
+wrdata waveform_I2_negative_v2.dat v(VIN2_P) v(VIN2_N) v(SUM2_P) v(SUM2_N) v(OUT2_P) v(OUT2_N) v(VO1_2A) v(VO1_2B) v(VCMFB2) v(PHI1) v(PHI2) v(RST) i(VDD_SRC)
 echo I2_TRIAL_ONLY_NO_ARCHITECTURE_OR_PVT_PASS
 plot v(OUT2_P) v(OUT2_N) cm2
 plot vd2
