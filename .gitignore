@@ -13,3 +13,34 @@ Thumbs.db
 
 # Block 5 simulation package
 /blocks/05_Switch_Network/sim/Block5_5C_Package/
+
+# hasil simulasi mentah (bisa dibuat ulang)
+/results/**/*.dat
+/results/**/*.log
+/results/**/netlist/
+/results/**/waveform*
+*.bak
+*.bak
+backup_pre_v2/
+
+__pycache__/
+*.pyc
+*.bak
+*~
+backup_pre_*/
+*.zip
+*.raw
+*.dat
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+.ipynb_checkpoints/
+simulation/
+# kecualikan data kecil yang memang dibuktikan
+!results/**/metrics.json
+!results/**/manifest.json
+!results/**/bitstream.txt
+!results/**/summary.txt
+!docs/**/*.pdf
