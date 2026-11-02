@@ -1,0 +1,17 @@
+E7: HOLD pada t_fall+30 ns, relatif terhadap level LAMA (V_lama). delta = waktu langkah input relatif terhadap
+awal turun PHI_SH (negatif = sebelum switch mati). f = bagian langkah yang ikut tertangkap (termasuk pedestal).
+Referensi Readiness @450 ns (P naik 0.4 V): dP = +24.95 mV (f = 6.2%), dN = -14.21 mV (f = 3.6%)
+
+ k  delta(ns) arahP   dP(mV)    fP(%)    dN(mV)    fN(%)
+ 0       -20  turun  -401.833   100.46   403.302   100.83
+ 1        -8  naik    403.018   100.75  -401.833   100.46
+ 2        -5  turun  -401.775   100.44   399.225    99.81
+ 3        -3  naik    378.835    94.71  -398.456    99.61
+ 4        -1  turun  -223.529    55.88   220.550    55.14
+ 5         0  naik      4.555     1.14    -1.699     0.42
+ 6         1  turun     3.302    -0.83    -1.834    -0.46
+ 7         3  naik     -1.834    -0.46     3.302    -0.83
+ 8         6  turun     3.302    -0.83    -1.834    -0.46
+ 9        12  naik     -1.834    -0.46     3.302    -0.83
+
+Status: MEASURED_NOT_FINAL. Bandingkan baris naik dengan referensi: f ~ 6%/3.6% menunjukkan langkah pada delta di mana switch masih sebagian menyala.

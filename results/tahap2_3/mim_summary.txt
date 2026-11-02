@@ -1,0 +1,14 @@
+f terdekat 1 MHz: 1e+06 Hz (baris 40)
+
+Kalibrasi metode: C_REF terukur 1000.00 fF (nilai ideal 1000 fF) -> metode OK (<2%)
+
+varian        MF     m     C (fF)     N_eff = C/C(E)   cocok dengan
+E               1     1        2.65            1.00   MF x m, hanya MF, hanya m, max(MF,m)
+B             100     1        2.65            1.00   hanya m
+C               1   100      264.50          100.00   MF x m, hanya m, max(MF,m)
+D            1000     1        2.65            1.00   hanya m
+A             100   100      264.50          100.00   hanya MF, hanya m, max(MF,m)
+simbol SYM100: C = 264.50 fF  (N_eff = 100.0) -> bandingkan dengan varian A-E; lihat juga baris netlist 'XC_SYM100' yang DIEMIT Xschem
+simbol SYM1000: C = 2645.00 fF  (N_eff = 1000.0) -> bandingkan dengan varian A-E; lihat juga baris netlist 'XC_SYM1000' yang DIEMIT Xschem
+
+Status: MEASURED_NOT_FINAL. Pembacaan: bila A ~ 10000 maka MF dan m berlipat ganda (efektif MF x m).

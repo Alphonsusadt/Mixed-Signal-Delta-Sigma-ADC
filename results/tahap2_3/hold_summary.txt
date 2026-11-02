@@ -1,0 +1,33 @@
+
+[E1] bandingkan dengan smoke dinamis di BLOCK5_XSCHEM_PYTHON_READINESS.md (stimulus asli tidak saya miliki; selisih besar = stimulus berbeda, bukan rangkaian):
+  t(ns)   HOLD_P   ref_P   dP(mV)   HOLD_N   ref_N   dN(mV)
+    130  1.10000  1.10000    -0.00   0.70000  0.70000    +0.00
+    200  1.10330  1.10330    +0.00   0.69817  0.69817    -0.00
+    350  0.70000  0.70000    +0.00   1.10000  1.10000    -0.00
+    450  0.69817  0.72495   -26.79   1.10330  1.08579   +17.51
+
+Semua nilai mV; ped = HOLD(t_off+13ns) - HOLD(t_off-2ns), step_imm = respons 6 ns setelah langkah input,
+step_drift = perubahan dari situ sampai akhir HOLD. Status: MEASURED_NOT_FINAL (tidak ada batas penerimaan).
+
+exp              cyc           P_trk        P_ped_mV   P_step_imm_mV P_step_drift_mV           N_trk        N_ped_mV   N_step_imm_mV N_step_drift_mV
+E1_baseline        1           1.100           3.302           0.000          -0.000           0.700          -1.833           0.000           0.000
+E1_baseline        2           0.700          -1.834           0.000           0.000           1.100           3.302           0.000          -0.000
+E2_input_frozen    1           1.100           3.302               -               -           0.700          -1.833               -               -
+E2_input_frozen    2           0.700          -1.833               -               -           1.100           3.302               -               -
+E3_step_late       1           1.100           3.302           0.000          -0.000           0.700          -1.833           0.000           0.000
+E3_step_late       2           0.700          -1.834           0.000           0.000           1.100           3.302           0.000          -0.000
+E4_ch_2p           1           1.100           1.713           0.000          -0.000           0.700          -0.914           0.000           0.000
+E4_ch_2p           2           0.700          -0.914           0.000           0.000           1.100           1.713           0.000          -0.000
+E5_edge_5n         1           1.100           2.522           0.000          -0.000           0.700          -1.872           0.000           0.000
+E5_edge_5n         2           0.700          -1.872           0.000           0.000           1.100           2.522           0.000          -0.000
+E6_standardVt      1           1.100           0.512          -0.000          -0.000           0.700          -1.441          -0.000           0.000
+E6_standardVt      2           0.700          -1.441          -0.000           0.000           1.100           0.512          -0.000          -0.000
+
+Rasio terhadap E1 (cycle 1, |nilai| pedestal dan step_imm; hipotesis 1/CH => E4/E1 ~ 0.5):
+  E2_input_frozen  P_ped_mV:   1.00  N_ped_mV:   1.00
+  E3_step_late     P_ped_mV:   1.00  N_ped_mV:   1.00
+  E4_ch_2p         P_ped_mV:   0.52  N_ped_mV:   0.50
+  E5_edge_5n       P_ped_mV:   0.76  N_ped_mV:   1.02
+  E6_standardVt    P_ped_mV:   0.16  N_ped_mV:   0.79
+
+(step_imm/step_drift di bawah 0.05 mV dianggap nol numerik; rasio tidak dicetak untuk nilai itu.)
