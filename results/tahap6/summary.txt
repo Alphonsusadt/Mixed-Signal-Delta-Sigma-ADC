@@ -1,0 +1,13 @@
+6C_bias058: SIMULATION_FAILED  (marker=True, error=['Error: measure  ugf  when(WHEN) : out of interval'])
+    OP: Vout_p=1.793 V, Vout_n=1.793 V, A0=-38.53 dB
+    -> keluaran menempel di rail pada titik DC: OTA di luar daerah kerja pada harness ini (CM keluaran tidak diregulasi oleh Vcmfb1 tetap). Ini batas HARNESS, bukan sifat OTA terkarakterisasi.
+exp               A0 dB   UGF MHz   PM deg   G@100k     G@1M  Vout_p  Vout_n   perubahan terhadap 6A
+6A_MF80_base      69.34    3.1531    61.37    30.03    10.02   0.918   0.918   
+6B_MF100          69.34    2.7111    66.61    28.65     8.65   0.918   0.918   dA0=+0.00 dB  dUGF=-14.0%  dPM=+5.24 deg
+6C_bias058     NOT_RUN / tidak ada hasil
+6D_vbz18          69.34    3.1531    61.37    30.03    10.02   0.918   0.918   dA0=+0.00 dB  dUGF=+0.0%  dPM=+0.00 deg
+
+Baseline 6A vs laporan Block 1 (A0 69.34 dB, UGF 3.1531 MHz, PM = 180 + phase_ugf = 61.3704 deg): REPRODUKSI COCOK (toleransi 0.05 dB / 0.5% / 0.1 deg)
+Hipotesis (BUKAN fakta): UGF ~ 1/Cc -> rasio MF 80/100 memperkirakan dUGF = -20%; terukur -14.0%.
+
+Status: MEASURED_NOT_FINAL. Lingkup: OTA berdiri sendiri, CMFB ideal (Vcmfb1 tetap 0.9 V), beban 20 pF per sisi, TT/27C. Belum mencakup SC-CMFB loop, beban sebenarnya (sampling cap), atau PVT.
