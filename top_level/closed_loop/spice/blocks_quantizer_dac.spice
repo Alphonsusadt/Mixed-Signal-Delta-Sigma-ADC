@@ -1,0 +1,103 @@
+* Diekstrak otomatis dari tb_4E_integration.spice (tanpa perubahan pada isi subckt).
+* Isi: StrongARM, BUF_B01, SR_Latch, DAC_1bit, NAND2, TG_cell (TG milik DAC).
+* Asumsi: .option scale=1e-6 dipasang di deck top-level (W/L dalam um).
+.subckt StrongARM VDD CLK Vout_P Vout_N Vin1 Vin2 GND
+*.iopin VDD
+*.iopin GND
+*.ipin Vin1
+*.ipin Vin2
+*.ipin CLK
+*.opin Vout_P
+*.opin Vout_N
+XS1 P CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333
++ nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XS3 Vout_P CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333
++ nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XM5 Vout_P Vout_N VDD VDD sky130_fd_pr__pfet_01v8 L=0.3 W=5 nf=1 ad=1.45 as=1.45 pd=10.58 ps=10.58 nrd=0.058 nrs=0.058 sa=0 sb=0
++ sd=0 mult=1
+XM6 Vout_N Vout_P VDD VDD sky130_fd_pr__pfet_01v8 L=0.3 W=5 nf=1 ad=1.45 as=1.45 pd=10.58 ps=10.58 nrd=0.058 nrs=0.058 sa=0 sb=0
++ sd=0 mult=1
+XS4 Vout_N CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333
++ nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XS2 Q CLK VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.5 nf=1 ad=0.435 as=0.435 pd=3.58 ps=3.58 nrd=0.193333333333333
++ nrs=0.193333333333333 sa=0 sb=0 sd=0 mult=1
+XM3 Vout_P Vout_N P GND sky130_fd_pr__nfet_01v8 L=0.3 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XM4 Vout_N Vout_P Q GND sky130_fd_pr__nfet_01v8 L=0.3 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XM1 P Vin1 TAIL GND sky130_fd_pr__nfet_01v8 L=0.5 W=10 nf=1 ad=2.9 as=2.9 pd=20.58 ps=20.58 nrd=0.029 nrs=0.029 sa=0 sb=0 sd=0
++ mult=1
+XM2 Q Vin2 TAIL GND sky130_fd_pr__nfet_01v8 L=0.5 W=10 nf=1 ad=2.9 as=2.9 pd=20.58 ps=20.58 nrd=0.029 nrs=0.029 sa=0 sb=0 sd=0
++ mult=1
+XM7 TAIL CLK GND GND sky130_fd_pr__nfet_01v8 L=0.3 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+.subckt BUF_B01 VCC IN OUT GND
+*.iopin VCC
+*.iopin GND
+*.ipin IN
+*.opin OUT
+XM1 net1 IN GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0
++ mult=1
+XM2 net1 IN VCC VCC sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM3 OUT net1 GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XM4 OUT net1 VCC VCC sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+.subckt SR_Latch SN RN Q QB GND VCC
+*.ipin SN
+*.ipin RN
+*.opin Q
+*.opin QB
+*.iopin VCC
+*.iopin GND
+x1 SN QB Q GND VCC NAND2
+x2 RN Q QB GND VCC NAND2
+.ends
+
+.subckt DAC_1bit VREFP VREFN Q QB VDD GND DAC_P DAC_N
+*.iopin VREFP
+*.iopin VREFN
+*.ipin Q
+*.ipin QB
+*.iopin VDD
+*.iopin GND
+*.opin DAC_P
+*.opin DAC_N
+x1 VREFP DAC_P QB Q VDD GND TG_cell
+x2 VREFN DAC_N QB Q VDD GND TG_cell
+x3 VREFN DAC_P Q QB VDD GND TG_cell
+x4 VREFP DAC_N Q QB VDD GND TG_cell
+.ends
+
+.subckt NAND2 A B Y GND VCC
+*.ipin A
+*.ipin B
+*.opin Y
+*.iopin GND
+*.iopin VCC
+XMP1 Y A VCC VCC sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XMP2 Y B VCC VCC sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1
+XMN1 Y A net1 GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMN2 net1 B GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+.subckt TG_cell A B CLK_P CLK_N VDD GND
+*.iopin A
+*.iopin B
+*.ipin CLK_P
+*.ipin CLK_N
+*.iopin VDD
+*.iopin GND
+XMP A CLK_P B VDD sky130_fd_pr__pfet_01v8 L=0.15 W=256 nf=1 ad=74.24 as=74.24 pd=512.58 ps=512.58 nrd=0.0011328125
++ nrs=0.0011328125 sa=0 sb=0 sd=0 mult=1
+XMN A CLK_N B GND sky130_fd_pr__nfet_01v8 L=0.15 W=8 nf=1 ad=2.32 as=2.32 pd=16.58 ps=16.58 nrd=0.03625 nrs=0.03625 sa=0 sb=0 sd=0
++ mult=1
+.ends
+

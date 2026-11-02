@@ -1,0 +1,48 @@
+* fb_sampler.spice - cabang sampling umpan balik DAC (BARU, tidak mengubah STAGE1/STAGE2)
+*
+* Ditempel dari luar ke node sum_p/sum_n sebuah integrator (port STAGE1/STAGE2).
+* Struktur sama dengan cabang input: PHI1 sampel (a<-DAC, b<-VCM), PHI2 transfer (a<-VCM, b->sum).
+* Sizing TG identik dengan TG_SC_LVT (PMOS 8/0.35, NMOS 4/0.15, LVT) -> sama dengan Block 5.
+*
+* SWAP=1 : sisi P menyampel DAC_N dan sisi N menyampel DAC_P  -> tanda +b*v pada y_diff
+*          (dipakai di STAGE1)
+* SWAP=0 : sisi P menyampel DAC_P dan sisi N menyampel DAC_N  -> tanda -b*v pada y_diff
+*          (dipakai di STAGE2)
+* Penjelasan tanda: lihat sd_behavioral.py dan README.md. Jangan membalik salah satunya
+* tanpa mengulang studi model perilaku: umpan balik positif di I2 membuat loop tidak stabil.
+
+.subckt FB_TG_LVT A B CLK_P CLK_N VDD GND
+XMP A CLK_P B VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=8 nf=1 ad=2.32 as=2.32 pd=16.58 ps=16.58 nrd=0.03625 nrs=0.03625 sa=0 sb=0 sd=0 mult=1
+XMN A CLK_N B GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1
+.ends FB_TG_LVT
+
+* Satu sisi (P atau N) dari cabang sampling: din -> Cd -> sum
+* Tanpa 'params:' (instance dengan params: ditolak ngspice-46 mode compat hs a -> 'unknown subckt').
+* Nilai Cd dari .param global CD1 (stage 1) dan CD2 (stage 2), didefinisikan di deck.
+.subckt FB_SIDE1 din sum vcm phi1 phi1b phi2 phi2b vdd gnd
+XS1 din a phi1b phi1 vdd gnd FB_TG_LVT
+XS2 b vcm phi1b phi1 vdd gnd FB_TG_LVT
+CD a b {CD1}
+XT1 a vcm phi2b phi2 vdd gnd FB_TG_LVT
+XT2 b sum phi2b phi2 vdd gnd FB_TG_LVT
+.ends FB_SIDE1
+
+.subckt FB_SIDE2 din sum vcm phi1 phi1b phi2 phi2b vdd gnd
+XS1 din a phi1b phi1 vdd gnd FB_TG_LVT
+XS2 b vcm phi1b phi1 vdd gnd FB_TG_LVT
+CD a b {CD2}
+XT1 a vcm phi2b phi2 vdd gnd FB_TG_LVT
+XT2 b sum phi2b phi2 vdd gnd FB_TG_LVT
+.ends FB_SIDE2
+
+* Versi bertukar sisi (SWAP=1): dipakai STAGE1
+.subckt FB_SAMP_SWAP dac_p dac_n sum_p sum_n vcm phi1 phi1b phi2 phi2b vdd gnd
+XFP dac_n sum_p vcm phi1 phi1b phi2 phi2b vdd gnd FB_SIDE1
+XFN dac_p sum_n vcm phi1 phi1b phi2 phi2b vdd gnd FB_SIDE1
+.ends FB_SAMP_SWAP
+
+* Versi tidak bertukar (SWAP=0): dipakai STAGE2
+.subckt FB_SAMP_STRAIGHT dac_p dac_n sum_p sum_n vcm phi1 phi1b phi2 phi2b vdd gnd
+XFP dac_p sum_p vcm phi1 phi1b phi2 phi2b vdd gnd FB_SIDE2
+XFN dac_n sum_n vcm phi1 phi1b phi2 phi2b vdd gnd FB_SIDE2
+.ends FB_SAMP_STRAIGHT
