@@ -44,3 +44,10 @@ simulation/
 !results/**/bitstream.txt
 !results/**/summary.txt
 !docs/**/*.pdf
+
+# hasil simulasi besar
+top_level/closed_loop/results/**/waveform.dat
+blocks/06_Clock_gen/sim/out/*.dat
+blocks/06_Clock_gen/sim/out/*.raw
+*.bak
+backup_pre_v2/
