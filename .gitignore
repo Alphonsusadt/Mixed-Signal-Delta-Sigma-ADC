@@ -51,3 +51,16 @@ blocks/06_Clock_gen/sim/out/*.dat
 blocks/06_Clock_gen/sim/out/*.raw
 *.bak
 backup_pre_v2/
+
+# working notes and scratch runs (not part of the portfolio)
+F1_run_closed_loop.patch
+README_F1.md
+README_F5.md
+top_level/closed_loop/results/closed_loop/f1_dc100/
+top_level/closed_loop/results/closed_loop/f1_dc100_ideal/
+top_level/closed_loop/results/closed_loop/f1_sine300_b6_n1024/
+top_level/closed_loop/results/closed_loop/f1_smoke/
+top_level/closed_loop/results/closed_loop/f1_smoke_ideal/
+top_level/closed_loop/results/closed_loop/f5_smoke_n2/
+top_level/closed_loop/results/closed_loop/f5_smoke_n24/
+top_level/closed_loop/results/closed_loop/run_2026*/
