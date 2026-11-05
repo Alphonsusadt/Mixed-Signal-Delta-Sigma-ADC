@@ -1,0 +1,110 @@
+* diekstrak dari blocks/06_Clock_gen/sim/out/netlist/tb_6D_realload_vbn0p70.spice oleh extract_b6_subckts.py (isi subckt tidak diubah)
+.subckt B6_NONOV CLK PHI1 PHI1B PHI2 PHI2B VDD VBP GND VBN
+*.ipin CLK
+*.opin PHI1
+*.opin PHI1B
+*.opin PHI2
+*.opin PHI2B
+*.iopin VDD
+*.ipin VBP
+*.iopin GND
+*.ipin VBN
+x1 CLK VDD CLKB VDD GND B6_XOR
+x2 CLK GND CLKS VDD GND B6_XOR
+xd1 CLKB DCLKB VBP VDD VBN GND B6_DELAY_CS
+xd2 CLKS DCLKS VBP VDD VBN GND B6_DELAY_CS
+xa1 CLKB DCLKS PHI1S VDD GND B6_AND2
+xa2 CLKS DCLKB PHI2S VDD GND B6_AND2
+x3 PHI1S VDD PHI1B VDD GND B6_XOR
+x4 PHI1S GND PHI1 VDD GND B6_XOR
+x5 PHI2S VDD PHI2B VDD GND B6_XOR
+x6 PHI2S GND PHI2 VDD GND B6_XOR
+.ends
+
+.subckt B6_XOR A B OUT VDD GND
+*.ipin A
+*.ipin B
+*.opin OUT
+*.iopin VDD
+*.iopin GND
+XMPA VDD A pa VDD sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XMPB VDD B pa VDD sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XMPC pa C OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XMNA OUT A na GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMNB na B GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMNC OUT C GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+xnor A B C VDD GND B6_NOR2
+.ends
+
+.subckt B6_DELAY_CS IN OUT VBP VDD VBN GND
+*.ipin IN
+*.ipin VBP
+*.iopin VDD
+*.opin OUT
+*.ipin VBN
+*.iopin GND
+XMPS VDD VBP nps VDD sky130_fd_pr__pfet_01v8 L=1 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XMPI nps IN OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1
+XMNI OUT IN nns GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0
++ mult=1
+XMNS nns VBN GND GND sky130_fd_pr__nfet_01v8 L=1 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0
++ mult=1
+XC1 OUT GND sky130_fd_pr__cap_mim_m3_1 W=1 L=1 MF=4 m=4
+.ends
+
+.subckt B6_AND2 A B OUT VDD GND
+*.ipin A
+*.ipin B
+*.opin OUT
+*.iopin VDD
+*.iopin GND
+xnand A B NB VDD GND B6_NAND2
+xinv NB OUT VDD GND B6_INV
+.ends
+
+.subckt B6_NOR2 A B OUT VDD GND
+*.ipin A
+*.ipin B
+*.opin OUT
+*.iopin VDD
+*.iopin GND
+XMPA VDD A p1 VDD sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XMPB p1 B OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0
++ mult=1
+XMNA OUT A GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+XMNB OUT B GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+.ends
+
+.subckt B6_NAND2 A B OUT VDD GND
+*.ipin A
+*.ipin B
+*.opin OUT
+*.iopin VDD
+*.iopin GND
+XMPA VDD A OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMPB VDD B OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMNA OUT A n1 GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMNB n1 B GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+.ends
+
+.subckt B6_INV IN OUT VDD GND
+*.ipin IN
+*.opin OUT
+*.iopin VDD
+*.iopin GND
+XMP VDD IN OUT VDD sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0
++ mult=1
+XMN OUT IN GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1
+.ends
+

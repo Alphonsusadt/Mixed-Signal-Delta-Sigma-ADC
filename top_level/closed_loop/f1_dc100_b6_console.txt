@@ -1,0 +1,45 @@
+nohup: ignoring input
+******
+** ngspice-46 : Circuit level simulation program
+** Compiled with KLU Direct Linear Solver
+** The U. C. Berkeley CAD Group
+** Copyright 1985-1994, Regents of the University of California.
+** Copyright 2001-2025, The ngspice team.
+** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html
+** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html
+** Creation Date: Thu Apr 16 19:53:00 UTC 2026
+******
+
+Batch mode
+
+Comments and warnings go to log-file: ngspice.log
+
+INFO : 30 subckt terdefinisi: b6_and2, b6_delay_cs, b6_inv, b6_nand2, b6_nonov, b6_nor2, b6_xor, buf_b01, dac_1bit, fb_samp_straight, fb_samp_swap, fb_side1, fb_side2, fb_tg_lvt, nand2, s1_cmfb, s1_cmfb_out_v1, s1_ota_cmfb, s1_tg_cell, s1_tg_sc_lvt, s2_cmfb, s2_cmfb_out_i2_wired, s2_ota_cmfb, s2_tg_cell, s2_tg_sc_lvt, sr_latch, stage1, stage2, strongarm, tg_cell
+
+status: CHECK_OK  (deck: /headless/Document/Portfolio_Mixed/top_level/closed_loop/results/closed_loop/f1_dc100_b6/deck.spice)
+jalankan: ngspice -b -o ngspice.log deck.spice (cwd = /headless/Document/Portfolio_Mixed/top_level/closed_loop/results/closed_loop/f1_dc100_b6 )
+{
+  "n_bits": 497,
+  "mean_bit": 0.16700201207243462,
+  "mean_dac_diff_v": 0.10020120724346077,
+  "transitions_per_100": 64.91935483870968,
+  "q_levels_ok": true,
+  "I1": {
+    "cm_mean": 0.8972419620736177,
+    "cm_min": 0.8771620852149999,
+    "cm_max": 0.916106525555,
+    "diff_min": -0.5060759227899999,
+    "diff_max": 0.69766815871,
+    "diff_mean": 0.10020295080995589
+  },
+  "I2": {
+    "cm_mean": 0.8978529961365522,
+    "cm_min": 0.871586644955,
+    "cm_max": 0.924452041255,
+    "diff_min": -0.41097359214999996,
+    "diff_max": 0.4474302962000001,
+    "diff_mean": 0.038585401026914684
+  },
+  "dc_expected_dac_diff_v": 0.1,
+  "status": "SIMULATED_NOT_FINAL_PASS"
+}

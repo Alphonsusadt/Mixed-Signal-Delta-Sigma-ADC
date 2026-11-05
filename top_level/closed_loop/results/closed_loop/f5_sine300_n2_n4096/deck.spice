@@ -1,0 +1,77 @@
+* closed-loop Sigma-Delta orde-2 (dibangkitkan run_closed_loop.py)
+* stimulus : sinus diferensial 300.0 mV pk, fin=1.269531e+04 Hz (bin 13/4096)
+* STATUS   : SIMULATED_NOT_FINAL_PASS bila selesai; tidak ada kriteria pass/fail final.
+* bias default = nilai testbench I2 (dikalibrasi untuk stage-2); stage-1 BELUM diverifikasi.
+
+.option scale=1e-6
+.option reltol=1e-5 vntol=1e-8 abstol=1e-13
+.temp 27.0
+.lib /foss/pdks/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+.param cd1=1p cd2=1p
+
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/stage1_core.spice
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/stage2_core.spice
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/blocks_quantizer_dac.spice
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/fb_sampler.spice
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/b6_nonov.spice
+
+* ---- supply / referensi / bias ----
+VDD vdd 0 1.8
+VCM vcm 0 0.9
+VREFP vrefp 0 1.2
+VREFN vrefn 0 0.6
+VBIAS1 vbias1 0 0.58
+VBIAS2 vbias2 0 0.58
+VCS1 vcs1 0 0.925908120449107
+VCS2 vcs2 0 0.925908120449107
+VCMS1 vcms1 0 0.60354572
+VCMS2 vcms2 0 0.60354572
+VBZL vbz_l 0 1.8
+VBZR vbz_r 0 1.8
+
+* ---- clock (ideal), reset ----
+* ---- phi dari Blok 6 (F1): master CLK ideal -> B6_NONOV; bias ideal ----
+VCLKM clkm 0 PULSE(1.8 0 1.560000e-08 1.000000e-09 1.000000e-09 1.240000e-07 2.500000e-07)
+VVBN vbn_b6 0 0.7
+VVBP vbp_b6 0 0.71
+XNONOV clkm phi1 phi1b phi2 phi2b vdd vbp_b6 0 vbn_b6 B6_NONOV
+* ---- clk komparator dari phi2b via 2 x B6_INV (F5) ----
+XCI1 phi2b clkc1 vdd 0 B6_INV
+XCI2 clkc1 clk vdd 0 B6_INV
+VRST rst 0 PWL(0 1.8 5.000000e-06 1.8 5.001000e-06 0 1.033250e-03 0)
+VRSTB rstb 0 PWL(0 0 5.000000e-06 0 5.001000e-06 1.8 1.033250e-03 1.8)
+
+* ---- input diferensial ----
+VINP vin_p 0 SIN(0.9 0.15 1.269531250e+04 9.000000e-06)
+VINN vin_n 0 SIN(0.9 -0.15 1.269531250e+04 9.000000e-06)
+
+* ---- integrator ----
+X1 vin_p vin_n o1_p o1_n s1_p s1_n vo1a_1 vo1b_1 vcmfb_1 vdd vcm vbias1 vbz_l vbz_r vcs1 vcms1 phi1 phi1b phi2 phi2b rst rstb STAGE1
+X2 o1_p o1_n o2_p o2_n s2_p s2_n vo1a_2 vo1b_2 vcmfb_2 vdd vcm vbias2 vbz_l vbz_r vcs2 vcms2 phi1 phi1b phi2 phi2b rst rstb STAGE2
+
+* ---- umpan balik DAC -> node sum (tanda: lihat README) ----
+XFB1 dac_p dac_n s1_p s1_n vcm phi1 phi1b phi2 phi2b vdd 0 FB_SAMP_SWAP
+XFB2 dac_p dac_n s2_p s2_n vcm phi1 phi1b phi2 phi2b vdd 0 FB_SAMP_SWAP
+
+* ---- quantizer -> latch -> DAC (blok 4E apa adanya) ----
+XCMP vdd clk cmp_p cmp_n o2_p o2_n 0 StrongARM
+XBP vdd cmp_p p_buf 0 BUF_B01
+XBN vdd cmp_n n_buf 0 BUF_B01
+XSR p_buf n_buf q qb 0 vdd SR_Latch
+XDAC vrefp vrefn q qb vdd 0 dac_p dac_n DAC_1bit
+
+.nodeset v(q)=0 v(qb)=1.8
+.save v(q) v(o1_p) v(o1_n) v(o2_p) v(o2_n) v(phi1) v(phi2) v(clk)
+
+.control
+set wr_singlescale
+set wr_vecnames
+set numdgt=10
+tran 1n 1.033250e-03 0 100p
+linearize
+wrdata waveform.dat v(q) v(o1_p) v(o1_n) v(o2_p) v(o2_n) v(phi1) v(phi2) v(clk)
+echo CLOSED_LOOP_RUN_DONE
+.endc
+
+.end

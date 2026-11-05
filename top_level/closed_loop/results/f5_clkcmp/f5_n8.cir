@@ -1,0 +1,45 @@
+.option scale=1e-6 reltol=1e-5 abstol=1e-15 vntol=1e-8
+.temp 27
+.lib /foss/pdks/sky130A/libs.tech/combined/sky130.lib.spice tt
+.include /headless/Document/Portfolio_Mixed/top_level/closed_loop/spice/b6_nonov.spice
+* F5 N=8: clk_cmp = phi2b -> 8 x B6_INV. Beban clk 20f = PLACEHOLDER.
+VDD vdd 0 1.8
+VBN vbn 0 0.7
+VBP vbp 0 0.71
+VCLKM clkm 0 PULSE(1.8 0 15.6n 1n 1n 124n 250n)
+XNONOV clkm phi1 phi1b phi2 phi2b vdd vbp 0 vbn B6_NONOV
+Vm vm 0 0.9
+XLN1A vm phi1 vm 0 sky130_fd_pr__nfet_01v8_lvt W=4 L=0.15 nf=1 mult=1 m=16
+XLN1B vm phi1 vm 0 sky130_fd_pr__nfet_01v8 W=2 L=0.15 nf=1 mult=1 m=8
+XLP1A vm phi1b vm vdd sky130_fd_pr__pfet_01v8_lvt W=8 L=0.35 nf=1 mult=1 m=16
+XLP1B vm phi1b vm vdd sky130_fd_pr__pfet_01v8 W=4 L=0.15 nf=1 mult=1 m=8
+XLN2A vm phi2 vm 0 sky130_fd_pr__nfet_01v8_lvt W=4 L=0.15 nf=1 mult=1 m=16
+XLN2B vm phi2 vm 0 sky130_fd_pr__nfet_01v8 W=2 L=0.15 nf=1 mult=1 m=8
+XLP2A vm phi2b vm vdd sky130_fd_pr__pfet_01v8_lvt W=8 L=0.35 nf=1 mult=1 m=16
+XLP2B vm phi2b vm vdd sky130_fd_pr__pfet_01v8 W=4 L=0.15 nf=1 mult=1 m=8
+XI1 phi2b c1 vdd 0 B6_INV
+XI2 c1 c2 vdd 0 B6_INV
+XI3 c2 c3 vdd 0 B6_INV
+XI4 c3 c4 vdd 0 B6_INV
+XI5 c4 c5 vdd 0 B6_INV
+XI6 c5 c6 vdd 0 B6_INV
+XI7 c6 c7 vdd 0 B6_INV
+XI8 c7 clkc vdd 0 B6_INV
+CL clkc 0 20f
+.control
+set wr_singlescale
+set numdgt=12
+tran 0.1n 2u 0 0.1n
+wrdata f5_n8.dat v(clkm) v(phi1) v(phi2) v(phi2b) v(clkc)
+echo ===== F5_MEAS N=8 =====
+meas tran D_P2F_CLKR TRIG v(phi2) VAL=0.9 FALL=1 TD=500n TARG v(clkc) VAL=0.9 RISE=1 TD=500n
+meas tran D_P2R_CLKF TRIG v(phi2) VAL=0.9 RISE=1 TD=500n TARG v(clkc) VAL=0.9 FALL=1 TD=500n
+meas tran CLK_HIGH TRIG v(clkc) VAL=0.9 RISE=1 TD=500n TARG v(clkc) VAL=0.9 FALL=1 TD=500n
+meas tran CLKR_TO_P1R TRIG v(clkc) VAL=0.9 RISE=1 TD=500n TARG v(phi1) VAL=0.9 RISE=1 TD=500n
+meas tran TR_CLK TRIG v(clkc) VAL=0.18 RISE=1 TD=500n TARG v(clkc) VAL=1.62 RISE=1 TD=500n
+meas tran TF_CLK TRIG v(clkc) VAL=1.62 FALL=1 TD=500n TARG v(clkc) VAL=0.18 FALL=1 TD=500n
+meas tran CLK_MAX MAX v(clkc) FROM=500n TO=1.5u
+meas tran CLK_MIN MIN v(clkc) FROM=500n TO=1.5u
+echo F5_DONE
+.endc
+.end
