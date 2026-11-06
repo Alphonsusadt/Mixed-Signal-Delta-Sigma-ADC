@@ -64,3 +64,11 @@ top_level/closed_loop/results/closed_loop/f1_smoke_ideal/
 top_level/closed_loop/results/closed_loop/f5_smoke_n2/
 top_level/closed_loop/results/closed_loop/f5_smoke_n24/
 top_level/closed_loop/results/closed_loop/run_2026*/
+
+# working notes / hand-off files (not part of the portfolio)
+README_F1_v3.md
+README_TAHAP_*.md
+top_level/closed_loop/*_console.txt
+
+# per-sample Monte Carlo decks (kept: summary.md/json and offset_samples.csv)
+blocks/03_StrongARM/sim/results*/**/*.spice
