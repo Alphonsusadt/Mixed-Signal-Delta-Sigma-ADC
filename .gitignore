@@ -72,3 +72,8 @@ top_level/closed_loop/*_console.txt
 
 # per-sample Monte Carlo decks (kept: summary.md/json and offset_samples.csv)
 blocks/03_StrongARM/sim/results*/**/*.spice
+
+# Block 6 generated simulation output (reproducible with tools/run_block6.py)
+blocks/06_Clock_gen/sim/out/
+# per-case PVT decks (keep pvt_summary.csv and pvt_gap.png)
+results/pvt_block6/*.spice
