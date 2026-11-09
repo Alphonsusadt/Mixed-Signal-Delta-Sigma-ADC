@@ -77,3 +77,7 @@ blocks/03_StrongARM/sim/results*/**/*.spice
 blocks/06_Clock_gen/sim/out/
 # per-case PVT decks (keep pvt_summary.csv and pvt_gap.png)
 results/pvt_block6/*.spice
+*_console.txt
+*.orig_b6bias
+top_level/closed_loop/patch_b6bias.py
+top_level/closed_loop/results/f5_clkcmp_pvt_check/

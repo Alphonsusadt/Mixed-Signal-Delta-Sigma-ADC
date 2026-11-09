@@ -81,6 +81,9 @@ def make_parser():
                     help="subckt Blok 6 hasil tools/extract_b6_subckts.py")
     ap.add_argument("--b6-vbn", type=float, default=0.70, help="VBN ideal (provisional)")
     ap.add_argument("--b6-vbp", type=float, default=0.71, help="VBP ideal (provisional, dari VBP_MATCH)")
+    ap.add_argument("--b6-bias", choices=["ideal", "res"], default="ideal",
+                    help="ideal = VBN/VBP sumber ideal; res = generator bias resistor+mirror (replika diode), tc resistor dari model SKY130")
+    ap.add_argument("--b6-rbias", type=float, default=1.247933e6, help="R generator (ohm), hasil kalibrasi TT 27C 1.8V")
     ap.add_argument("--clk-source", choices=["ideal", "phi2b-chain"], default="ideal",
                     help="ideal = VCLK PULSE (baseline); phi2b-chain = clk komparator dari phi2b lewat N x B6_INV (F5; perlu --phi-source block6)")
     ap.add_argument("--clk-chain", type=int, default=2, help="jumlah B6_INV (genap) pada rantai clk (F5)")
@@ -185,10 +188,19 @@ def build_deck(cfg):
         if miss:
             raise SystemExit(f"pin B6_NONOV tak dikenal: {miss} (pin netlist: {pins})")
         b6_inc = f".include {os.path.abspath(cfg.b6_spice)}\n"
+        if cfg.b6_bias == "res":
+            _pn = "nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1"
+            _pp = "nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1"
+            bias_text = (f"RB1 vdd vbn_b6 {cfg.b6_rbias:.6e} tc1=-1.47e-3 tc2=2.7e-6\n"
+                         f"XBN1 vbn_b6 vbn_b6 0 0 sky130_fd_pr__nfet_01v8 L=1 W=0.5 {_pn}\n"
+                         f"XBN2 vbp_b6 vbn_b6 0 0 sky130_fd_pr__nfet_01v8 L=1 W=0.5 {_pn}\n"
+                         f"XBP1 vbp_b6 vbp_b6 vdd vdd sky130_fd_pr__pfet_01v8 L=1 W=1 {_pp}\n")
+        else:
+            bias_text = f"VVBN vbn_b6 0 {cfg.b6_vbn}\nVVBP vbp_b6 0 {cfg.b6_vbp}\n"
         phi_block = (f"* ---- phi dari Blok 6 (F1): master CLK ideal -> B6_NONOV; bias ideal ----\n"
                      f"VCLKM clkm 0 PULSE({cfg.vdd} 0 {fmt_t(cfg.b6_clk_delay_ns * ns)} {fmt_t(edge)} {fmt_t(edge)} "
                      f"{fmt_t(cfg.b6_clk_low_ns * ns)} {fmt_t(T)})\n"
-                     f"VVBN vbn_b6 0 {cfg.b6_vbn}\nVVBP vbp_b6 0 {cfg.b6_vbp}\n"
+                     f"{bias_text}"
                      f"XNONOV {' '.join(conn[p] for p in pins)} B6_NONOV\n")
     else:
         b6_inc = ""

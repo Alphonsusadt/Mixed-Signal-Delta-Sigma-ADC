@@ -26,6 +26,8 @@ TEMP_RE = re.compile(r"^\s*\.temp\s+\S+", re.I)
 VDD_RE = re.compile(r"^(\s*vvdd\s+\S+\s+\S+\s+)(\S+)(.*)$", re.I)
 CLK_RE = re.compile(r"^(\s*vclk\s+\S+\s+\S+\s+pulse\s*\(\s*\S+\s+)(\S+)(.*)$", re.I)
 WR_RE = re.compile(r"(\bwrdata\s+)(\S+)", re.I)
+VAL_RE = re.compile(r"(\bVAL=)([-+0-9.eE]+)", re.I)
+VM_RE = re.compile(r"^(\s*vm\s+\S+\s+\S+\s+)(\S+)(.*)$", re.I)
 INC_RE = re.compile(r"^\s*\.(?:include|lib)\s+(\"[^\"]+\"|'[^']+'|\S+)", re.I)
 
 
@@ -73,6 +75,12 @@ def patch(lines, corner, temp, vdd, wr_path, seed=None):
                 m = CLK_RE.match(l)
                 if m:
                     l = f"{m.group(1)}{vdd}{m.group(3)}"; saw_clk = True
+        if re.match(r"^\s*meas\b", l, re.I):
+            k = float(vdd) / 1.8   # thresholds were written for 1.8 V: keep 10/50/90 %
+            l = VAL_RE.sub(lambda mm: f"{mm.group(1)}{float(mm.group(2)) * k:.6g}", l)
+        mv = VM_RE.match(l)
+        if mv:
+            l = f"{mv.group(1)}{float(vdd) / 2:.6g}{mv.group(3)}"
         if WR_RE.search(l):
             l = WR_RE.sub(lambda mm: f"{mm.group(1)}{wr_path}", l)
         out.append(l)
@@ -115,6 +123,8 @@ def parse_dat(path, vdd):
         return None
     t, p1, p2 = a[:, 0], a[:, 2], a[:, 4]
     m = t > 50e-9
+    if not m.any():
+        return None
     return float(np.minimum(p1, p2)[m].max()), float(max(p1[m].max(), p2[m].max()))
 
 
