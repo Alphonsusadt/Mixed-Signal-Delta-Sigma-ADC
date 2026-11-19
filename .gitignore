@@ -90,3 +90,6 @@ blocks/03_StrongARM/sim/results/**
 !blocks/03_StrongARM/sim/results/**/summary.md
 !blocks/03_StrongARM/sim/results/**/summary.json
 !blocks/03_StrongARM/sim/results/**/offset_samples.csv
+
+# local simulation output of tb_SD_TOP (raw files)
+top_level/xschem/sim_out/
