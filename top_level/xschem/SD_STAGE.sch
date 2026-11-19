@@ -191,7 +191,7 @@ N 1300 670 1300 650 {}
 C {lab_pin.sym} 1300 650 3 0 {name=l83 lab=out_n}
 N 1300 730 1300 750 {}
 C {lab_pin.sym} 1300 750 1 0 {name=l84 lab=GND}
-C {blocks/01_OTA/xschem/OTA_CMFB.sym} 1750 250 0 0 {name=x11 }
+C {blocks/01_OTA/xschem/OTA_CMFB.sym} 1750 250 0 0 {name=x11 CC_MF=100}
 N 1830 200 1870 200 {}
 C {lab_pin.sym} 1870 200 2 0 {name=l85 lab=vdd}
 N 1600 200 1560 200 {}
@@ -266,7 +266,7 @@ C {ipin.sym} -450 280 0 0 {name=P12 lab=vbz_l}
 C {ipin.sym} -450 320 0 0 {name=P13 lab=vbz_r}
 C {opin.sym} -450 360 0 0 {name=P14 lab=out_p}
 C {opin.sym} -450 400 0 0 {name=P15 lab=out_n}
-C {opin.sym} -450 440 0 0 {name=P16 lab=sum_p}
-C {opin.sym} -450 480 0 0 {name=P17 lab=sum_n}
+C {iopin.sym} -450 440 0 0 {name=P16 lab=sum_p}
+C {iopin.sym} -450 480 0 0 {name=P17 lab=sum_n}
 C {iopin.sym} -450 520 0 0 {name=P18 lab=vdd}
 C {iopin.sym} -450 560 0 0 {name=P19 lab=GND}
