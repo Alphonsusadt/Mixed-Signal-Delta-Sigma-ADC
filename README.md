@@ -44,6 +44,8 @@ flowchart LR
 | 4 | 1-bit DAC | Rail-to-rail feedback multiplexer | [EN](blocks/04_1Bit_DAC/docs/Block4_DAC_Report_EN.pdf) / [ID](blocks/04_1Bit_DAC/docs/Block4_DAC_Report_ID.pdf) |
 | 5 | Switch network | CMOS transmission gates, charge-injection and hold-error analysis | [EN](blocks/05_Switch_Network/docs/Block5_SwitchNetwork_Report_EN.pdf) / [ID](blocks/05_Switch_Network/docs/Block5_SwitchNetwork_Report_ID.pdf) |
 | 6 | Clock generator (NONOV) | Feedback-free non-overlapping two-phase generator after Spilka et al., DDECS 2012; current-starved delay cells, 80 MOS | closure report in `blocks/06_Clock_gen/docs/` |
+| 7 | sinc^3 CIC decimator (digital) | Hogenauer CIC, R = 80, 20-bit, no multipliers; bit-exact RTL vs Python model (RTL simulation) | [README](blocks/07_Digital_CIC/README.md) |
+| 8 | Compensation FIR (digital) | 21-tap FIR that flattens the CIC droop on 0-15 kHz (-0.115/+0.028 dB); serial MAC, one 18x18 multiplier (RTL simulation) | [README](blocks/08_Digital_FIR/README.md) |
 
 Every block was closed with an explicit scope statement and measured numbers labelled `MEASURED_NOT_FINAL` or `SIMULATED_NOT_FINAL_PASS`, never an unqualified "pass".
 
@@ -56,10 +58,13 @@ Non-overlap gap 14.3 ns, phase width 110.6 ns (T = 250 ns), zero overlap, edges 
 ## Repository structure
 
 ```
-blocks/01_OTA ... 06_Clock_gen   schematics (xschem), testbenches, per-block docs
+blocks/01_OTA ... 06_Clock_gen   analog blocks: schematics (xschem), testbenches, per-block docs
+blocks/07_Digital_CIC            sinc^3 CIC decimator: RTL, Icarus testbench, bit-exact Python model
+blocks/08_Digital_FIR            CIC droop-compensation FIR: RTL, Icarus testbench, bit-exact Python model
+top_level/xschem                 SD_TOP (Blocks 1-6 connected) and the system testbench tb_SD_TOP
 top_level/closed_loop            closed-loop modulator runs, Python drivers, results
 tools/                           Python generators and runners for the testbenches
-docs/README.md                   index of the block reports
+docs/README.md                   index of all reports and READMEs
 ```
 
 ## Reproducing
@@ -75,6 +80,20 @@ python3 tools/run_block6.py analyze
 
 Closed-loop drivers are documented in `top_level/closed_loop/README.md`. Large raw waveform files are not committed (see `.gitignore`).
 
+## FPGA demonstration: what it shows and what it does not
+
+Blocks 1-6 are transistor-level analog circuits (OTA, SC-CMFB, StrongARM comparator, 1-bit DAC, switches, clock generator). **They cannot be placed in an FPGA**, which contains only digital logic. They are verified in SPICE only (closed-loop runs and `top_level/xschem/tb_SD_TOP.sch`). Only the digital back end (Block 7 CIC, Block 8 compensation FIR) runs on the Tang Nano 20K.
+
+The FPGA work is staged, and each stage is labelled for what it really is:
+
+| Stage | Runs on the FPGA | Source of the modulator data | What it proves | Label used in this repository |
+|---|---|---|---|---|
+| 1 | ROM with the bitstream -> CIC (Block 7) -> FIR (Block 8) -> on-chip comparison with golden data -> LED pass/fail | the **transistor-level bitstream from SPICE** (closed-loop run f6, 4096 bits), replayed | the synthesized and placed digital back end matches the bit-exact model on real hardware | "FPGA demo replays the transistor-level bitstream (SPICE)" |
+| 2 | the same chain, replayed continuously, samples sent to an STM32F407 -> DAC -> oscilloscope | the same SPICE bitstream, replayed | the reconstructed 12.7 kHz tone of the simulated modulator is visible on a real oscilloscope | "FPGA demo replays the transistor-level bitstream (SPICE)" |
+| 3 (optional) | a fixed-point behavioral model of the 2nd-order modulator, driven by a digital sine (NCO), -> CIC -> FIR, live | an **ideal mathematical model**, not the circuit | the full chain runs in real time | "live behavioral model (ideal), not the analog circuit" |
+
+Why the distinction matters: the behavioral model has no finite OTA gain or slew, no common-mode feedback, no comparator offset, no switch charge injection, no clock skew and no process, voltage or temperature dependence. In this project the ideal model gives 77.2 dB SNDR where the transistor-level loop gives 73.6 dB (run f6), and the FS / -40 C / 1.62 V corner failure found in the transistor-level simulation (input pair of the OTA without headroom) cannot appear in the model at all. Only the replayed SPICE bitstream (stages 1-2) carries the behavior of the actual analog circuit into the FPGA, as a recording rather than live. Real analog behavior on silicon would need a fabricated chip, which this project does not have.
+
 ## Known limits
 
 - Nominal corner and pre-layout only for Blocks 1-5; Block 6 additionally has the PVT baseline above. No Monte Carlo, no mismatch, no post-layout, no transient noise in the decks.
@@ -83,9 +102,11 @@ Closed-loop drivers are documented in `top_level/closed_loop/README.md`. Large r
 - The OTA inside the loop is not exactly the OTA characterized in Block 1 (different Cc and bias); Block 1 numbers do not transfer automatically.
 - The comparator clock derived from phi2b uses an inverter chain (N = 2, 0.46 ns); a deliberately designed comparator delay is not done.
 
-## Roadmap (not in this repository yet)
+## Roadmap
 
-Digital back end: Verilog CIC decimation filter (no multipliers), self-checking Icarus testbench reading the analog bitstream, Gowin synthesis and place-and-route for the Tang Nano 20K, analog reconstruction through an R-2R DAC. Then: bias generator for Block 6, Monte Carlo, layout.
+In the repository (RTL simulation, `SIMULATED_NOT_FINAL_PASS`): Block 7 sinc^3 CIC decimator (`blocks/07_Digital_CIC/`) and Block 8 droop-compensation FIR (`blocks/08_Digital_FIR/`), both bit-exact against Python models with self-checking Icarus testbenches.
+
+Next: FPGA stages 1-2 above (Tang Nano 20K, then STM32F407 + DAC + oscilloscope), optional stage 3. Then: bias generator for Block 6 and the integrators, Monte Carlo, layout.
 
 ## License
 
