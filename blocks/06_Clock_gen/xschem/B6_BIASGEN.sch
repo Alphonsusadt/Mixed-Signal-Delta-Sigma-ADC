@@ -7,7 +7,7 @@ E {}
 T {B6_BIASGEN: PVT-tracking bias generator (resistor + mirror + replica diodes), I = (VDD - VBN)/R} -60 -290 0 0 0.45 0.45 {}
 T {R = 1.247933 MOhm (xhigh_po); the SKY130 tempco tc1/tc2 is applied in the closed-loop deck, not in this symbol.} -60 -255 0 0 0.3 0.3 {}
 T {XBN1 / XBP1 replicate the starving devices of the delay cells (B6_DELAY_CS: MNS and MPS).} -60 -225 0 0 0.3 0.3 {}
-C {res.sym} 0 0 0 0 {name=RB1 value=1.247933e6 m=1}
+C {res.sym} 0 0 0 0 {name=RB1 value="1.247933e6 tc1=-1.47e-3 tc2=2.7e-6" m=1}
 C {sky130_fd_pr/nfet_01v8.sym} 200 0 0 0 {name=BN1 W=0.5
 L=1
 nf=1
