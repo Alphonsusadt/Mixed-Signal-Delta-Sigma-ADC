@@ -81,3 +81,12 @@ results/pvt_block6/*.spice
 *.orig_b6bias
 top_level/closed_loop/patch_b6bias.py
 top_level/closed_loop/results/f5_clkcmp_pvt_check/
+
+# Langkah 3 (2026-11-19): generated figures, corner f7 runs, StrongARM MC raw results
+top_level/closed_loop/results/closed_loop/*/figures/
+top_level/closed_loop/results/closed_loop/f7_*/
+blocks/03_StrongARM/sim/results/**
+!blocks/03_StrongARM/sim/results/**/
+!blocks/03_StrongARM/sim/results/**/summary.md
+!blocks/03_StrongARM/sim/results/**/summary.json
+!blocks/03_StrongARM/sim/results/**/offset_samples.csv
