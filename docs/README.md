@@ -29,5 +29,6 @@ System target (revised 2026-11-02): ~75 dB SNDR at OSR 80, 25 kHz bandwidth.
 |---|---|
 | 7 sinc^3 CIC decimator | [blocks/07_Digital_CIC/README.md](../blocks/07_Digital_CIC/README.md) |
 | 8 CIC droop-compensation FIR | [blocks/08_Digital_FIR/README.md](../blocks/08_Digital_FIR/README.md) |
+| DSP analysis of the chain: responses, aliasing, SNDR after decimation, word lengths, idle tones, usable bandwidth | [top_level/dsp_analysis/README.md](../top_level/dsp_analysis/README.md) |
 
 What the FPGA demonstration does and does not show (replayed transistor-level bitstream versus an ideal behavioral model): see the root [README](../README.md#fpga-demonstration-what-it-shows-and-what-it-does-not).

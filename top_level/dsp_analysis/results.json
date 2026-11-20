@@ -1,0 +1,301 @@
+{
+ "A": {
+  "cic_droop_db_at_15k": -3.978,
+  "cic_droop_db_at_25k": -11.766,
+  "chain_dev_db_0_15k": [
+   -0.115,
+   0.028
+  ],
+  "chain_gain_db_at_20k": -4.916,
+  "chain_gain_db_at_25k": -11.58,
+  "fir_max_gain_db": 3.984
+ },
+ "B_alias_attenuation": [
+  {
+   "k": 1,
+   "band_khz": 15.0,
+   "min_atten_db": 26.054
+  },
+  {
+   "k": 1,
+   "band_khz": 25.0,
+   "min_atten_db": 11.766
+  },
+  {
+   "k": 2,
+   "band_khz": 15.0,
+   "min_atten_db": 49.159
+  },
+  {
+   "k": 2,
+   "band_khz": 25.0,
+   "min_atten_db": 40.379
+  },
+  {
+   "k": 3,
+   "band_khz": 15.0,
+   "min_atten_db": 61.185
+  },
+  {
+   "k": 3,
+   "band_khz": 25.0,
+   "min_atten_db": 53.664
+  },
+  {
+   "k": 4,
+   "band_khz": 15.0,
+   "min_atten_db": 69.352
+  },
+  {
+   "k": 4,
+   "band_khz": 25.0,
+   "min_atten_db": 62.391
+  },
+  {
+   "k": 5,
+   "band_khz": 15.0,
+   "min_atten_db": 75.529
+  },
+  {
+   "k": 5,
+   "band_khz": 25.0,
+   "min_atten_db": 68.886
+  }
+ ],
+ "B_noise_budget": {
+  "15k": {
+   "aliased_over_native_db": -48.786
+  },
+  "25k": {
+   "aliased_over_native_db": -38.587
+  }
+ },
+ "C_sndr": [
+  {
+   "f0_hz": 1007.08,
+   "amp_dbfs": -6,
+   "bits_15k": 80.933,
+   "bits_25k": 73.818,
+   "dec_15k": 80.487,
+   "dec_loss_db_15k": 0.446
+  },
+  {
+   "f0_hz": 1007.08,
+   "amp_dbfs": -20,
+   "bits_15k": 67.655,
+   "bits_25k": 61.572,
+   "dec_15k": 67.448,
+   "dec_loss_db_15k": 0.207
+  },
+  {
+   "f0_hz": 1007.08,
+   "amp_dbfs": -40,
+   "bits_15k": 47.492,
+   "bits_25k": 40.346,
+   "dec_15k": 47.147,
+   "dec_loss_db_15k": 0.346
+  },
+  {
+   "f0_hz": 12701.416,
+   "amp_dbfs": -6,
+   "bits_15k": 80.934,
+   "bits_25k": 73.585,
+   "dec_15k": 80.548,
+   "dec_loss_db_15k": 0.386
+  },
+  {
+   "f0_hz": 12701.416,
+   "amp_dbfs": -20,
+   "bits_15k": 67.609,
+   "bits_25k": 61.594,
+   "dec_15k": 67.391,
+   "dec_loss_db_15k": 0.218
+  },
+  {
+   "f0_hz": 12701.416,
+   "amp_dbfs": -40,
+   "bits_15k": 47.67,
+   "bits_25k": 41.878,
+   "dec_15k": 47.454,
+   "dec_loss_db_15k": 0.217
+  }
+ ],
+ "D": {
+  "reference_sndr_15k": 80.548,
+  "cic_out_bits": [
+   {
+    "bits": 10,
+    "sndr": 56.151
+   },
+   {
+    "bits": 12,
+    "sndr": 68.448
+   },
+   {
+    "bits": 14,
+    "sndr": 77.689
+   },
+   {
+    "bits": 16,
+    "sndr": 80.401
+   },
+   {
+    "bits": 18,
+    "sndr": 80.559
+   },
+   {
+    "bits": 20,
+    "sndr": 80.548
+   }
+  ],
+  "fir_coef_width": [
+   {
+    "cw": 8,
+    "dev_db": [
+     0.0,
+     0.874
+    ],
+    "sndr": 57.832
+   },
+   {
+    "cw": 10,
+    "dev_db": [
+     -0.135,
+     0.036
+    ],
+    "sndr": 69.599
+   },
+   {
+    "cw": 12,
+    "dev_db": [
+     -0.104,
+     0.045
+    ],
+    "sndr": 78.144
+   },
+   {
+    "cw": 14,
+    "dev_db": [
+     -0.115,
+     0.029
+    ],
+    "sndr": 80.358
+   },
+   {
+    "cw": 16,
+    "dev_db": [
+     -0.115,
+     0.028
+    ],
+    "sndr": 80.551
+   },
+   {
+    "cw": 18,
+    "dev_db": [
+     -0.115,
+     0.028
+    ],
+    "sndr": 80.548
+   }
+  ],
+  "fir_out_bits": [
+   {
+    "bits": 10,
+    "sndr": 52.202
+   },
+   {
+    "bits": 12,
+    "sndr": 63.771
+   },
+   {
+    "bits": 14,
+    "sndr": 74.705
+   },
+   {
+    "bits": 16,
+    "sndr": 79.761
+   },
+   {
+    "bits": 18,
+    "sndr": 80.481
+   },
+   {
+    "bits": 21,
+    "sndr": 80.548
+   }
+  ],
+  "cic_register_bits_needed": 19.966
+ },
+ "E_idle_tones": [
+  {
+   "dc_fs": 0.0,
+   "max_inband_spur_dbfs": -317.76,
+   "spur_freq_hz": 24932.861
+  },
+  {
+   "dc_fs": 0.004,
+   "max_inband_spur_dbfs": -82.05,
+   "spur_freq_hz": 23437.5
+  },
+  {
+   "dc_fs": 0.016,
+   "max_inband_spur_dbfs": -89.153,
+   "spur_freq_hz": 15625.0
+  },
+  {
+   "dc_fs": 0.1,
+   "max_inband_spur_dbfs": -265.212,
+   "spur_freq_hz": 213.623
+  },
+  {
+   "dc_fs": 0.004,
+   "with_ktc_noise": true,
+   "max_inband_spur_dbfs": -84.725
+  },
+  {
+   "dc_fs": 0.016,
+   "with_ktc_noise": true,
+   "max_inband_spur_dbfs": -99.991
+  }
+ ],
+ "F_method": [
+  {
+   "window": "rect",
+   "coherent": 72.744,
+   "non_coherent": 15.392
+  },
+  {
+   "window": "hann",
+   "coherent": 74.798,
+   "non_coherent": 56.313
+  },
+  {
+   "window": "bh",
+   "coherent": 75.18,
+   "non_coherent": 72.755
+  }
+ ],
+ "G_alternative": {
+  "cic_r": 40,
+  "fir_taps": 41,
+  "fir_rate_hz": 100000.0,
+  "passband_hz": 20000.0,
+  "dev_db_0_20k": [
+   -0.021,
+   0.008
+  ],
+  "min_stop_atten_db_30_50k": 71.112,
+  "sndr_0_20k": 77.017,
+  "sndr_current_chain_0_20k": 77.499,
+  "bitstream_sndr_0_20k": 77.388
+ },
+ "H_f6": {
+  "bits": 4096,
+  "f0_hz": 12695.312,
+  "sndr_bitstream_25k": 73.616,
+  "sndr_bitstream_15k": 91.984,
+  "cic_samples": 51,
+  "cic_exact_equals_bitexact": true,
+  "note": "51 decimated samples are too few for a decimated-domain SNDR"
+ }
+}

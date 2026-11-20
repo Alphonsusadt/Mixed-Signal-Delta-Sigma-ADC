@@ -93,6 +93,7 @@ blocks/07_Digital_CIC            sinc^3 CIC decimator: RTL, Icarus testbench, bi
 blocks/08_Digital_FIR            CIC droop-compensation FIR: RTL, Icarus testbench, bit-exact Python model
 top_level/xschem                 SD_TOP (Blocks 1-6 connected) and the system testbench tb_SD_TOP
 top_level/closed_loop            closed-loop modulator runs, Python drivers, results, corner study (docs/)
+top_level/dsp_analysis           DSP analysis of the decimation chain (CIC + FIR)
 tools/                           Python generators and runners for the testbenches
 docs/README.md                   index of all reports and READMEs
 ```
@@ -109,6 +110,17 @@ python3 tools/run_block6.py analyze
 ```
 
 Closed-loop drivers are documented in `top_level/closed_loop/README.md`. Large raw waveform files are not committed (see `.gitignore`).
+
+## DSP analysis of the decimation chain
+
+Full report: [top_level/dsp_analysis/README.md](top_level/dsp_analysis/README.md) (bit-exact models of Blocks 7 and 8, driven by the behavioral modulator).
+
+- The CIC + FIR chain costs 0.2-0.45 dB of SNDR in the 0-15 kHz band; aliased noise is 49 dB below the native in-band noise.
+- Word lengths have margin: 16 CIC output bits, 14-bit coefficients and 18 output bits would already reach the same SNDR.
+- **Limit found:** with a 50 kS/s output the band edge of 25 kHz equals the output Nyquist frequency, so the chain is flat only to 15 kHz (-4.9 dB at 20 kHz). A CIC with R = 40 followed by a compensating FIR at 100 kS/s and decimation by 2 is flat to 20 kHz (not implemented in RTL).
+- Idle tones of the 1-bit loop for small DC inputs are 80-90 dB below full scale.
+
+![CIC and FIR responses](top_level/dsp_analysis/figures/A_responses.png)
 
 ## FPGA demonstration: what it shows and what it does not
 
@@ -132,12 +144,13 @@ Why the distinction matters: the behavioral model has no finite OTA gain or slew
 - Closed loop: one amplitude (-6 dBFS), one bin, one run per configuration; single-run SNDR scatter is about +-1 dB at OSR 80 and about 3 dB at OSR 16.
 - The OTA inside the loop is not exactly the OTA characterized in Block 1 (different Cc and bias); Block 1 numbers do not transfer automatically.
 - The comparator clock derived from phi2b uses an inverter chain (N = 2, 0.46 ns); a deliberately designed comparator delay is not done.
+- The implemented decimator (CIC R = 80 + FIR, 50 kS/s) is flat only to 15 kHz; the 25 kHz band of the OSR-80 SNDR figure is a modulator figure (ideal band limit), not what the decimator delivers.
 
 ## Roadmap
 
 In the repository (RTL simulation, `SIMULATED_NOT_FINAL_PASS`): Block 7 sinc^3 CIC decimator (`blocks/07_Digital_CIC/`) and Block 8 droop-compensation FIR (`blocks/08_Digital_FIR/`), both bit-exact against Python models with self-checking Icarus testbenches.
 
-Done in simulation: corner diagnosis of the closed loop (report linked above).
+Done in simulation: corner diagnosis of the closed loop and DSP analysis of the decimation chain (reports linked above).
 
 Next: FPGA stages 1-2 above (Tang Nano 20K, then STM32F407 + DAC + oscilloscope), optional stage 3. Then: fix of the FS input headroom (low-Vt input pair), a real bias generator, MIM arrays for Cs/Cf/Cd, Monte Carlo, layout.
 
