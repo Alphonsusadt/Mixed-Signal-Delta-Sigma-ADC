@@ -19,6 +19,7 @@ System target (revised 2026-11-02): ~75 dB SNDR at OSR 80, 25 kHz bandwidth.
 | Item | Where |
 |---|---|
 | Closed-loop runs driven from Python (SNDR from the bitstream) | [top_level/closed_loop/README.md](../top_level/closed_loop/README.md) |
+| Corner study (runs f7): causes of the SF and FS failures, tracking bias, low-Vt check | [top_level/closed_loop/docs/corner_study_f7.md](../top_level/closed_loop/docs/corner_study_f7.md) |
 | Xschem top level and system testbench (sources, probes, oscilloscope graphs) | `top_level/xschem/SD_TOP.sch`, `top_level/xschem/tb_SD_TOP.sch`, result figure `top_level/xschem/tb_SD_TOP_scope.png` |
 | Raw-file viewer with A/B cursors | `top_level/closed_loop/tools/view_raw.py` |
 

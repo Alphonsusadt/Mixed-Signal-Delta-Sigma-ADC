@@ -60,10 +60,28 @@ python3 run_closed_loop_f1.py --analyze results/closed_loop/<run>/waveform.dat -
 
 Each 4112-cycle transistor-level run takes several hours. The analysis needs exactly 4096 samples of the bitstream (the files hold 4097 lines).
 
+## Corners (runs f7) and their causes
+
+Full report: [docs/corner_study_f7.md](docs/corner_study_f7.md).
+
+| Corner | Bias | SNDR @ OSR 80 |
+|---|---|---|
+| TT / 27 C / 1.8 V (f6, Block 6 phases + tempco bias resistor) | fixed | 73.62 dB |
+| SF / 125 C / 1.98 V | fixed | 28.17 dB |
+| SF / 125 C / 1.98 V | tracking (ideal sources re-computed per corner) | 77.44 dB |
+| FS / -40 C / 1.62 V | fixed | 33.58 dB |
+| FS / -40 C / 1.62 V | tracking | fails (loop stuck) |
+
+- SF fails because the fixed bias voltages do not track PVT (bias currents 4-92x too high); tracking bias restores it. A real bias generator is not designed yet.
+- FS fails because the PMOS input pair of the OTA has no headroom at the 0.9 V common mode (needs 0.91 V source-gate voltage, has 0.72 V). A low-Vt input pair removes the limit in a DC check; not verified in the OTA or the loop.
+- One run per configuration; 77.4 dB versus 73.6 dB is within scatter plus a different bias and is not claimed as an improvement.
+
+Note (2026-11-19): before commit `9339809` the Xschem top level `SD_TOP.sch` did not match the f6 deck (two different `TG_cell` schematics with the same name, and a different OTA compensation capacitor). After the fix the system testbench reproduces f6 bit for bit over 20 us.
+
 ## Known limits
 
 - Single amplitude (-6 dBFS), single bin, one run per configuration; no transient noise.
-- Bias voltages (OTA bias, Block 6 VBN/VBP) are ideal sources. Block 6 at fixed bias is not PVT-robust (see the Block 6 report), so these runs are only meaningful at the nominal point.
+- Bias voltages (OTA bias, Block 6 VBN/VBP) are ideal sources. The loop is not robust over corners (see "Corners" above and the Block 6 report).
 - The OTA in the loop differs from the one characterized in Block 1 (Cc 264.5 fF here vs 211.6 fF there, different bias); Block 1 numbers do not transfer automatically.
 - The system target was revised to about 75 dB at OSR 80: an ideal 2nd-order 1-bit modulator cannot reach 99 dB there.
 - The comparator clock chain (N = 2, 0.46 ns) is not a designed delay; placing the comparator timing deliberately is future work.
